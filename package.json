@@ -3,10 +3,13 @@
   "version": "0.1.0",
   "description": "mastery",
   "scripts": {
-    "start": "node server.js"
+    "start": "node ."
   },
   "dependencies": {
-    "express": "4.13.4"
+    "express": "4.13.4",
+    "aws-sdk": "2.3.11",
+    "tmp": "0.0.28",
+    "faststart": "1.0.0"
   },
   "repository": {
     "type": "git",

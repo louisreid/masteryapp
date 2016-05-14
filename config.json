@@ -1,0 +1,5 @@
+{
+  "s3Bucket": "mastery-app",
+  "dynamoUsers": "mastery-users",
+  "dynamoVideos": "mastery-videos"
+}
