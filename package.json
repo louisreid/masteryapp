@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "mastery",
   "scripts": {
-    "start": "node server.js"
+    "start": "node ."
   },
   "dependencies": {
     "express": "4.13.4"
