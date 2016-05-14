@@ -9,6 +9,7 @@ var uuid = require('node-uuid');
 var fs = require("fs");
 var path = require("path");
 var faststart = require('faststart');
+var videoThumb = require('video-thumb');
 var session = require('client-sessions');
 var config = require('./config.json');
 
@@ -79,6 +80,24 @@ app.put('/video/:video/note', function(req, res) {
   });
 });
 
+app.get('/video/:video/thumb.png', function(req, res) {
+  var video = req.params.video;
+  console.log("Thumbnail!");
+  s3.headObject({Key: video + "-thumb"}, function(err, data) {
+    console.log("headObject:", err, data);
+    if (err) {
+      // TODO: Handle better!
+      res.end(err);
+    } else {
+      res.writeHead(200, {
+        "Content-Length": data.ContentLength,
+        "Content-Type": data.ContentType
+      });
+      s3.getObject({Key: video + "-thumb"}).createReadStream().pipe(res);
+    }
+  });
+});
+
 app.get('/video/:video', function(req, res) {
   var video = req.params.video;
   s3.headObject({Key: video}, function(err, data) {
@@ -114,6 +133,7 @@ app.get('/video/:video', function(req, res) {
   });
 });
 
+/*
 app.put('/video', function(req, res) {
   console.log("PUT", req.url);
   var assignment = req.query.assignment;
@@ -137,39 +157,46 @@ app.put('/video', function(req, res) {
     });
   });
 });
+*/
 
 app.post('/video', multer({dest: tmp.dirSync().name}).single('file'), function(req, res) {
   console.log("POST", req.url);
   var assignment = req.query.assignment;
   var user = req.query.user;
   var video = uuid.v4();
-  tmp.file(function(err, path, fd, cleanup) {
-    faststart.createReadStream(req.file.path).pipe(fs.createWriteStream(path)).on('finish', function() {
-      console.log("converted");
-      var body = fs.createReadStream(path);
-      s3.upload({Key: video, ContentType: req.file.mimetype, Body: body}, function(err, data) {
-        console.log("uploaded", err, data);
-dynamoAssignments.updateItem(
-{"Key": {"id": {"S": assignment}},
- "UpdateExpression": "ADD videos :video",
- "ExpressionAttributeValues": {":video": {"SS": [video]}}},
-function (err, data) {
-  console.log("dynamoAssignments.updateItem", err, data);
-});
-dynamoUsers.updateItem(
-{"Key": {"id": {"S": user}},
- "UpdateExpression": "ADD videos :video",
- "ExpressionAttributeValues": {":video": {"SS": [video]}}},
-function (err, data) {
-  console.log("dynamoUsers.updateItem", err, data);
-});
-dynamoVideos.putItem(
-{"Item": {"id": {"S": video}}},
-function (err, data) {
-  console.log("dynamoVideos.putItem", err, data);
-});
-        res.end();
-        cleanup();
+  tmp.file(function(err, path1, fd, cleanup1) {
+    videoThumb.extract(req.file.path, path1, '00:00:05', '320x200', function() {
+      console.log('thumbnailed');
+      tmp.file(function(err, path2, fd, cleanup2) {
+        faststart.createReadStream(req.file.path).pipe(fs.createWriteStream(path2)).on('finish', function() {
+          console.log("converted");
+          var body = fs.createReadStream(path1);
+          s3.upload({Key: video + "-thumb", ContentType: "image/png", Body: body}, function(err, data) {
+            var body = fs.createReadStream(path2);
+            s3.upload({Key: video, ContentType: req.file.mimetype, Body: body}, function(err, data) {
+              console.log("uploaded", err, data);
+              dynamoAssignments.updateItem({"Key": {"id": {"S": assignment}},
+                                            "UpdateExpression": "ADD videos :video",
+                                            "ExpressionAttributeValues": {":video": {"SS": [video]}}},
+                function (err, data) {
+                  console.log("dynamoAssignments.updateItem", err, data);
+                });
+              dynamoUsers.updateItem({"Key": {"id": {"S": user}},
+                                      "UpdateExpression": "ADD videos :video",
+                                      "ExpressionAttributeValues": {":video": {"SS": [video]}}},
+                function (err, data) {
+                  console.log("dynamoUsers.updateItem", err, data);
+                });
+              dynamoVideos.putItem({"Item": {"id": {"S": video}}},
+                function (err, data) {
+                  console.log("dynamoVideos.putItem", err, data);
+                });
+              res.end();
+              cleanup2();
+              cleanup1();
+            });
+          });
+        });
       });
     });
   });
