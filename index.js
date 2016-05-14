@@ -1,4 +1,5 @@
 var express = require('express');
+var multer  = require('multer');
 var aws = require('aws-sdk');
 var tmp = require('tmp');
 var faststart = require('faststart');
@@ -79,6 +80,23 @@ app.put('/video.mp4', function(req, res) {
             cleanup2();
           });
         });
+      });
+    });
+  });
+});
+
+app.post('/upload', multer({dest: tmp.dirSync().name}).single('file'), function(req, res) {
+  console.log(req);
+  var key = "video.mp4";
+  console.log("POST", req.url);
+  tmp.file(function(err, path, fd, cleanup) {
+    faststart.createReadStream(req.file.path).pipe(fs.createWriteStream(path)).on('finish', function() {
+      console.log("converted");
+      var body = fs.createReadStream(path);
+      s3.upload({Key: key, Body: body}, function(err, data) {
+        console.log("uploaded", err, data);
+        res.end();
+        cleanup();
       });
     });
   });
