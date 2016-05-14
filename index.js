@@ -1,13 +1,23 @@
 var express = require('express');
+var morgan = require('morgan');
+var bodyParser = require('body-parser');
 var multer  = require('multer');
+var async = require('async');
 var aws = require('aws-sdk');
 var tmp = require('tmp');
+var uuid = require('node-uuid');
+var fs = require("fs");
+var path = require("path");
 var faststart = require('faststart');
+var stringify = require('node-stringify');
 var config = require('./config.json');
 
 var app = express();
+app.use(morgan("combined"));
+app.use(bodyParser.json());
 
 var s3 = new aws.S3({params: {Bucket: 'mastery-app'}});
+/*
 s3.listObjects({}, function(err, data) {
   if (err) {
     console.log("Error uploading data: ", err);
@@ -15,22 +25,52 @@ s3.listObjects({}, function(err, data) {
     console.log("Successfully uploaded data to myBucket/myKey", data);
   }
 });
+*/
 
+var dynamoTopics = new aws.DynamoDB({params: {TableName: 'mastery-topics'}});
 var dynamoUsers = new aws.DynamoDB({params: {TableName: 'mastery-users'}});
-dynamoUsers.getItem(
-{"Key" : { "id" : { "S" : "bob" } } },
-function (err, data) {
-  console.log("getItem", err, data);
+var dynamoVideos = new aws.DynamoDB({params: {TableName: 'mastery-videos'}});
+
+app.get('/user/:user', function(req, res) {
+  var user = req.params.user;
+  dynamoUsers.getItem({"Key": {"id": {"S": user}}}, function (err, data) {
+    console.log("dynamoUsers.getItem", err, data);
+    res.json(data);
+  });
 });
 
+app.get('/topic/:topic', function(req, res) {
+  var topic = req.params.topic;
+  dynamoTopics.getItem({"Key": {"id": {"S": topic}}}, function (err, data) {
+    console.log("dynamoTopics.getItem", err, data);
+    res.json(data);
+  });
+});
 
+app.get('/video/:video/note', function(req, res) {
+  var video = req.params.video;
+  dynamoVideos.getItem({"Key": {"id": {"S": video}}}, function (err, data) {
+    console.log("dynamoVideos.getItem", err, data);
+    res.json(data);
+  });
+});
 
+app.put('/video/:video/note', function(req, res) {
+  var video = req.params.video;
+  var note = JSON.stringify(req.body);
+  dynamoVideos.updateItem(
+  {"Key": {"id": {"S": video}},
+   "UpdateExpression": "ADD notes :note",
+   "ExpressionAttributeValues": {":note": {"SS": [note]}}},
+  function (err, data) {
+    console.log("dynamoVideos.updateItem", err, data);
+    res.end();
+  });
+});
 
-var fs = require("fs");
-var path = require("path");
-app.get('/video.mp4', function(req, res) {
-  var key = "video.mp4";
-  s3.headObject({Key: key}, function(err, data) {
+app.get('/video/:video', function(req, res) {
+  var video = req.params.video;
+  s3.headObject({Key: video}, function(err, data) {
     console.log("headObject:", err, data);
     if (err) {
       // TODO: Handle better!
@@ -58,14 +98,16 @@ app.get('/video.mp4', function(req, res) {
           "Content-Type": "video/mp4"
         });
     
-      s3.getObject({Key: key, Range: req.headers.range}).createReadStream().pipe(res);
+      s3.getObject({Key: video, Range: req.headers.range}).createReadStream().pipe(res);
     }
   });
 });
 
-app.put('/video.mp4', function(req, res) {
-  var key = "video.mp4";
+app.put('/video', function(req, res) {
   console.log("PUT", req.url);
+  var topic = req.query.topic;
+  var user = req.query.user;
+  var video = uuid.v4();
   tmp.file(function(err, path1, fd, cleanup1) {
     req.pipe(fs.createWriteStream(path1)).on('finish', function() {
       console.log("downloaded");
@@ -85,16 +127,36 @@ app.put('/video.mp4', function(req, res) {
   });
 });
 
-app.post('/upload', multer({dest: tmp.dirSync().name}).single('file'), function(req, res) {
-  console.log(req);
-  var key = "video.mp4";
+app.post('/video', multer({dest: tmp.dirSync().name}).single('file'), function(req, res) {
   console.log("POST", req.url);
+  var topic = req.query.topic;
+  var user = req.query.user;
+  var video = uuid.v4();
   tmp.file(function(err, path, fd, cleanup) {
     faststart.createReadStream(req.file.path).pipe(fs.createWriteStream(path)).on('finish', function() {
       console.log("converted");
       var body = fs.createReadStream(path);
-      s3.upload({Key: key, Body: body}, function(err, data) {
+      s3.upload({Key: video, Body: body}, function(err, data) {
         console.log("uploaded", err, data);
+dynamoTopics.updateItem(
+{"Key": {"id": {"S": topic}},
+ "UpdateExpression": "ADD videos :video",
+ "ExpressionAttributeValues": {":video": {"SS": [video]}}},
+function (err, data) {
+  console.log("dynamoTopics.updateItem", err, data);
+});
+dynamoUsers.updateItem(
+{"Key": {"id": {"S": user}},
+ "UpdateExpression": "ADD videos :video",
+ "ExpressionAttributeValues": {":video": {"SS": [video]}}},
+function (err, data) {
+  console.log("dynamoUsers.updateItem", err, data);
+});
+dynamoVideos.putItem(
+{"Item": {"id": {"S": video}}},
+function (err, data) {
+  console.log("dynamoVideos.putItem", err, data);
+});
         res.end();
         cleanup();
       });
@@ -109,4 +171,7 @@ app.use('/', express.static(__dirname + '/public'));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
 
-app.listen(process.env.PORT || 80);
+var port = process.env.PORT || 80;
+app.listen(port, function (err) {
+  console.log("Listening on port", port);
+});
