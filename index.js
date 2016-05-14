@@ -42,27 +42,75 @@ app.get('/user/:user', function(req, res) {
   var user = req.params.user;
   dynamoUsers.getItem({"Key": {"id": {"S": user}}}, function (err, data) {
     console.log("dynamoUsers.getItem", err, data);
-    res.json(data);
+    if (err) {
+      res.end(err);
+    } else {
+      var obj = {"id": user,
+                 "name": (data.Item.displayName) ? data.Item.displayName.S : "",
+                 "score": (data.Item.score) ? Number(data.Item.score.N) : 0,
+                 "videos": (data.Item.videos) ? data.Item.videos.SS : []};
+      res.json(obj);
+    }
   });
+});
+
+app.put('/user/:user', function(req, res) {
+  var user = req.params.user;
+  var name = req.body.name ? req.body.name : "";
+  var score = req.body.score ? req.body.score : 0;
+  dynamoUsers.updateItem({"Key": {"id": {"S": user}},
+                          "UpdateExpression": "SET displayName = :name, score = :score",
+                          "ExpressionAttributeValues": {":name": {"S": name},
+                                                        ":score": {"N": "" + score}}},
+    function (err, data) {
+      console.log("dynamoUsers.updateItem", err, data);
+      res.end(err);
+    });
 });
 
 app.get('/assignment/:assignment', function(req, res) {
   var assignment = req.params.assignment;
   dynamoAssignments.getItem({"Key": {"id": {"S": assignment}}}, function (err, data) {
     console.log("dynamoAssignments.getItem", err, data);
-    res.json(data);
+    if (err) {
+      res.end(err);
+    } else {
+      var obj = {"id": assignment,
+                 "summary": (data.Item.summary) ? data.Item.summary.S : "",
+                 "detail": (data.Item.detail) ? data.Item.detail.S : "",
+                 "videos": (data.Item.videos) ? data.Item.videos.SS : [],
+                 "passedVideos": (data.Item.passedVideos) ? data.Item.passedVideos.SS : [],
+                 "failedVideos": (data.Item.failedVideos) ? data.Item.failedVideos.SS : []};
+      res.json(obj);
+    }
   });
 });
 
-app.get('/video/:video/note', function(req, res) {
+app.put('/assignment/:assignment', function(req, res) {
+  var assignment = req.params.assignment;
+  var summary = req.body.summary ? req.body.summary : "";
+  var detail = req.body.detail ? req.body.detail : "";
+  dynamoAssignments.updateItem({"Key": {"id": {"S": assignment}},
+                                "UpdateExpression": "SET summary = :summary, detail = :detail",
+                                "ExpressionAttributeValues": {":summary": {"S": summary},
+                                                              ":detail": {"S": detail}}},
+    function (err, data) {
+      console.log("dynamoUsers.updateItem", err, data);
+      res.end(err);
+    });
+});
+
+app.get('/video/:video/data', function(req, res) {
   var video = req.params.video;
   dynamoVideos.getItem({"Key": {"id": {"S": video}}}, function (err, data) {
     console.log("dynamoVideos.getItem", err, data);
     if (err) {
       res.end(err);
     } else {
-      var json = {"notes": (data.Item.notes) ? data.Item.notes.SS.map(function(x) {return JSON.parse(x);}) : []};
-      res.json(json);
+      var obj = {"assignment": (data.Item.assignment) ? data.Item.assignment.S : "",
+                 "user": (data.Item.user) ? data.Item.user.S : "",
+                 "notes": (data.Item.notes) ? data.Item.notes.SS.map(function(x) {return JSON.parse(x);}) : []};
+      res.json(obj);
     }
   });
 });
@@ -70,14 +118,13 @@ app.get('/video/:video/note', function(req, res) {
 app.put('/video/:video/note', function(req, res) {
   var video = req.params.video;
   var note = JSON.stringify(req.body);
-  dynamoVideos.updateItem(
-  {"Key": {"id": {"S": video}},
-   "UpdateExpression": "ADD notes :note",
-   "ExpressionAttributeValues": {":note": {"SS": [note]}}},
-  function (err, data) {
-    console.log("dynamoVideos.updateItem", err, data);
-    res.end();
-  });
+  dynamoVideos.updateItem({"Key": {"id": {"S": video}},
+                           "UpdateExpression": "ADD notes :note",
+                           "ExpressionAttributeValues": {":note": {"SS": [note]}}},
+    function (err, data) {
+      console.log("dynamoVideos.updateItem", err, data);
+      res.end();
+    });
 });
 
 app.get('/video/:video/thumb.png', function(req, res) {
@@ -88,6 +135,9 @@ app.get('/video/:video/thumb.png', function(req, res) {
     if (err) {
       // TODO: Handle better!
       res.end(err);
+    } else if (data.statusCode >= 400) {
+      // TODO: Handle better!
+      res.end(data);
     } else {
       res.writeHead(200, {
         "Content-Length": data.ContentLength,
@@ -105,6 +155,9 @@ app.get('/video/:video', function(req, res) {
     if (err) {
       // TODO: Handle better!
       res.end(err);
+    } else if (data.statusCode >= 400) {
+      // TODO: Handle better!
+      res.end(data);
     } else {
       var total = data.ContentLength;
   
@@ -187,7 +240,7 @@ app.post('/video', multer({dest: tmp.dirSync().name}).single('file'), function(r
                 function (err, data) {
                   console.log("dynamoUsers.updateItem", err, data);
                 });
-              dynamoVideos.putItem({"Item": {"id": {"S": video}}},
+              dynamoVideos.putItem({"Item": {"id": {"S": video}, "assignment": {"S": assignment}, "user": {"S": user}}},
                 function (err, data) {
                   console.log("dynamoVideos.putItem", err, data);
                 });

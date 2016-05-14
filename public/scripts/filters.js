@@ -6,6 +6,11 @@ filter('timestamp', function() {
         : Math.floor(number / 60) + ":" + ((number % 60 > 9) ? (number % 60) : '0' + (number % 60));
   };
 }).
+filter('thumbUrl', function() {
+  return function(id) {
+    return "video/" + id + "/thumb.png";
+  }
+}).
 filter('videoUrl', function() {
   return function(id) {
     return "video/" + id;
