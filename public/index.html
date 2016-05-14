@@ -19,8 +19,18 @@
     height: auto;
   }
   </style>
-  <link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
-  <script src="http://vjs.zencdn.net/c/video.js"></script>
+  <link href="bower_components/video.js/dist/video-js.css" rel="stylesheet">
+  <script src="bower_components/video.js/dist/ie8/videojs-ie8.min.js"></script>
+  <script src="bower_components/video.js/dist/video.min.js"></script>
+<!--
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.min.js"></script>
+-->
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="scripts/app.js"></script>
+  <script src="scripts/controllers.js"></script>
+  <script src="scripts/filters.js"></script>
 </head>
 
 <body ng-app="masteryApp">
@@ -33,120 +43,14 @@
       </div>
       <div class="top-bar-right">
         <ul class="menu">
-          <li><a href="#">Dashboard</a></li>
-          <li><a href="#">Assignments</a></li>
-          <li><a href="#">Class</a></li>
+          <li><a href="#/dashboard">Dashboard</a></li>
+          <li><a href="#/assignments">Assignments</a></li>
+          <li><a href="#/class">Class</a></li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="feedback">
-    <div class="row">
-      <div class="column small-8 small-offset-2">
-        <ul class="user-embed">
-          <li><img src="img/user-profile.png" alt=""></li>
-          <li class="user-embed__name">Daisy T</li>
-          <li class="user-embed__username">(daisytarbek93)</li>
-          <li class="user-embed__score">| 9k</li>
-        </ul>
-        <form action="">
-          <div class="comment">
-            <input type="text" placeholder="Write timed feedback" />
-            <ul class="comment__buttons">
-              <li><img src="img/comment-return.png" alt=""></li>
-              <li class="comment__buttons__text">add comment at 00:30</li>
-              <li><img src="img/comment-voice.png" alt=""></li>
-              <li><img src="img/comment-emoticon.png" alt=""></li>
-            </ul>
-          </div>
-          <ul class="feedback__stickers">
-            <li class="feedback__stickers__title">Add timed feedback:</li>
-            <li><img src="img/sticker-1.png" alt=""></li>
-            <li><img src="img/sticker-2.png" alt=""></li>
-            <li><img src="img/sticker-3.png" alt=""></li>
-            <li><img src="img/sticker-4.png" alt=""></li>
-            <li><img src="img/sticker-5.png" alt=""></li>
-            <li><img src="img/sticker-6.png" alt=""></li>
-            <li><img src="img/sticker-7.png" alt=""></li>
-            <li><img src="img/sticker-8.png" alt=""></li>
-            <li><img src="img/sticker-9.png" alt=""></li>
-            <li><img src="img/sticker-10.png" alt=""></li>
-            <li><img src="img/sticker-11.png" alt=""></li>
-            <li><img src="img/sticker-12.png" alt=""></li>
-          </ul>
-          <ul class="row main-buttons">
-            <li class="column small-3 main-buttons__promote">
-              <img src="img/main-buttons__check.png" alt=""> Promote
-            </li>
-            <li class="column small-3 main-buttons__pass">
-              <img src="img/main-buttons__cross.png" alt=""> Pass
-            </li>
-            <li class="column small-3 main-buttons__fail">
-              <img src="img/main-buttons__promote.png" alt=""> Fail
-            </li>
-            <li class="column small-3 main-buttons__return">
-              <img src="img/main-buttons__return.png" alt=""> Return
-            </li>
-          </ul>
-        </form>
-      </div>
-    </div>
-  </div>
-  <div class="main-wrapper">
-    <div class="row">
-      <div class="small-8 small-offset-2">
-        <div class="current-video">
-          <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" poster="img/video-1_placeholder.png" data-setup="{}">
-            <source src="video/video-1.mp4" type='video/mp4' />
-          </video>
-          <ul class="current-video__comments">
-            <li>
-              <span class="time">0:12</span>
-              <img src="img/sticker-1.png" alt="">
-            </li>
-            <li>
-              <span class="time">0:15</span>
-              You've understood variables well here. 
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <div class="marking-playlist">
-      <div class="row">
-        <div class="small-10 small-offset-1">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim quo, delectus nostrum vitae reiciendis dolore impedit sapiente, eius alias molestias fugiat quisquam totam consequuntur nobis eveniet odio velit ullam reprehenderit.
-
-        </div>
-      </div>
-    </div>
-
-  </div>
-  <script src="vendor/jquery.js"></script>
-  <script src="vendor/foundation.min.js"></script>
-  <script>
-  // Once the video is ready
-  _V_("example_video_1").ready(function() {
-
-    // Store the video object
-    var myPlayer = this;
-    // Make up an aspect ratio
-    var aspectRatio = 720 / 1280;
-
-    function resizeVideoJS() {
-      var width = document.getElementById(myPlayer.id).parentElement.offsetWidth;
-      myPlayer.width(width).height(width * aspectRatio);
-
-    }
-
-    // Initialize resizeVideoJS()
-    resizeVideoJS();
-    // Then on resize call resizeVideoJS()
-    window.onresize = resizeVideoJS;
-
-  });
-  </script>
+  <div ng-view></div>
 </body>
 
 </html>

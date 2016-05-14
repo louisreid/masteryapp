@@ -33,7 +33,7 @@ s3.listObjects({}, function(err, data) {
 });
 */
 
-var dynamoTopics = new aws.DynamoDB({params: {TableName: 'mastery-topics'}});
+var dynamoAssignments = new aws.DynamoDB({params: {TableName: 'mastery-assignments'}});
 var dynamoUsers = new aws.DynamoDB({params: {TableName: 'mastery-users'}});
 var dynamoVideos = new aws.DynamoDB({params: {TableName: 'mastery-videos'}});
 
@@ -45,10 +45,10 @@ app.get('/user/:user', function(req, res) {
   });
 });
 
-app.get('/topic/:topic', function(req, res) {
-  var topic = req.params.topic;
-  dynamoTopics.getItem({"Key": {"id": {"S": topic}}}, function (err, data) {
-    console.log("dynamoTopics.getItem", err, data);
+app.get('/assignment/:assignment', function(req, res) {
+  var assignment = req.params.assignment;
+  dynamoAssignments.getItem({"Key": {"id": {"S": assignment}}}, function (err, data) {
+    console.log("dynamoAssignments.getItem", err, data);
     res.json(data);
   });
 });
@@ -57,7 +57,12 @@ app.get('/video/:video/note', function(req, res) {
   var video = req.params.video;
   dynamoVideos.getItem({"Key": {"id": {"S": video}}}, function (err, data) {
     console.log("dynamoVideos.getItem", err, data);
-    res.json(data);
+    if (err) {
+      res.end(err);
+    } else {
+      var json = {"notes": (data.Item.notes) ? data.Item.notes.SS.map(function(x) {return JSON.parse(x);}) : []};
+      res.json(json);
+    }
   });
 });
 
@@ -111,7 +116,7 @@ app.get('/video/:video', function(req, res) {
 
 app.put('/video', function(req, res) {
   console.log("PUT", req.url);
-  var topic = req.query.topic;
+  var assignment = req.query.assignment;
   var user = req.query.user;
   var video = uuid.v4();
   tmp.file(function(err, path1, fd, cleanup1) {
@@ -135,7 +140,7 @@ app.put('/video', function(req, res) {
 
 app.post('/video', multer({dest: tmp.dirSync().name}).single('file'), function(req, res) {
   console.log("POST", req.url);
-  var topic = req.query.topic;
+  var assignment = req.query.assignment;
   var user = req.query.user;
   var video = uuid.v4();
   tmp.file(function(err, path, fd, cleanup) {
@@ -144,12 +149,12 @@ app.post('/video', multer({dest: tmp.dirSync().name}).single('file'), function(r
       var body = fs.createReadStream(path);
       s3.upload({Key: video, ContentType: req.file.mimetype, Body: body}, function(err, data) {
         console.log("uploaded", err, data);
-dynamoTopics.updateItem(
-{"Key": {"id": {"S": topic}},
+dynamoAssignments.updateItem(
+{"Key": {"id": {"S": assignment}},
  "UpdateExpression": "ADD videos :video",
  "ExpressionAttributeValues": {":video": {"SS": [video]}}},
 function (err, data) {
-  console.log("dynamoTopics.updateItem", err, data);
+  console.log("dynamoAssignments.updateItem", err, data);
 });
 dynamoUsers.updateItem(
 {"Key": {"id": {"S": user}},
