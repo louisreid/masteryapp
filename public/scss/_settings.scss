@@ -44,17 +44,13 @@
 
 // 1. Global
 // ---------
-$purple: #53297A;
-$peach: #FEE0BF;
-$gold: #DFA010;
 
-// $global-font-size: 100%;
-$global-font-size: 141.66625%;
+$global-font-size: 100%;
 $global-width: rem-calc(1200);
 $global-lineheight: 1.5;
 $foundation-palette: (
-  primary: $purple,
-  secondary: $peach,
+  primary: #2199e8,
+  secondary: #777,
   success: #3adb76,
   warning: #ffae00,
   alert: #ec5840,
@@ -64,16 +60,15 @@ $medium-gray: #cacaca;
 $dark-gray: #8a8a8a;
 $black: #0a0a0a;
 $white: #fefefe;
-$body-background: $gold;
-// $body-background: $peach;
+$body-background: $white;
 $body-font-color: $black;
-$body-font-family: 'Open Sans', 'Ubuntu', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
+$body-font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Roboto, Arial, sans-serif;
 $body-antialiased: true;
 $global-margin: 1rem;
 $global-padding: 1rem;
-$global-weight-normal: 300;
+$global-weight-normal: normal;
 $global-weight-bold: bold;
-$global-radius: 0;
+$global-radius: 0.2em;
 $global-text-direction: ltr;
 $global-flexbox: false;
 $print-transparent-backgrounds: true;
@@ -107,30 +102,36 @@ $block-grid-max: 8;
 // 4. Base Typography
 // ------------------
 
-$header-font-family: 'Ubuntu', $body-font-family;
-// $header-font-weight: $global-weight-normal;
-$header-font-weight: bold;
+$header-font-family: $body-font-family;
+$header-font-weight: $global-weight-normal;
 $header-font-style: normal;
 $font-family-monospace: Consolas, 'Liberation Mono', Courier, monospace;
 $header-sizes: (
   small: (
     'h1': 24,
     'h2': 20,
+    'h3': 19,
+    'h4': 18,
+    'h5': 17,
+    'h6': 16,
   ),
   medium: (
     'h1': 48,
-    'h2': 35,
+    'h2': 40,
+    'h3': 31,
+    'h4': 25,
+    'h5': 20,
+    'h6': 16,
   ),
 );
 $header-color: inherit;
 $header-lineheight: 1.4;
-$header-margin-bottom: 1.3rem;
+$header-margin-bottom: 0.5rem;
 $header-text-rendering: optimizeLegibility;
 $small-font-size: 80%;
 $header-small-font-color: $medium-gray;
 $paragraph-lineheight: 1.6;
-// $paragraph-margin-bottom: 1rem;
-$paragraph-margin-bottom: 1.1rem;
+$paragraph-margin-bottom: 1rem;
 $paragraph-text-rendering: optimizeLegibility;
 $code-color: $black;
 $code-font-family: $font-family-monospace;
@@ -259,16 +260,12 @@ $buttongroup-expand-max: 6;
 // 13. Callout
 // -----------
 
-// $callout-background: $white;
 $callout-background: $white;
-$callout-background-fade: 0%;
-// $callout-border: 1px solid rgba($black, 0.25);
-$callout-border: none;
-// $callout-margin: 0 0 1rem 0;
-$callout-margin: 0;
+$callout-background-fade: 85%;
+$callout-border: 1px solid rgba($black, 0.25);
+$callout-margin: 0 0 1rem 0;
 $callout-padding: 1rem;
-// $callout-font-color: $body-font-color;
-$callout-font-color: $black;
+$callout-font-color: $body-font-color;
 $callout-font-color-alt: $body-background;
 $callout-radius: $global-radius;
 $callout-link-tint: 30%;
@@ -355,7 +352,7 @@ $input-border: 1px solid $medium-gray;
 $input-border-focus: 1px solid $dark-gray;
 $input-shadow: inset 0 1px 2px rgba($black, 0.1);
 $input-shadow-focus: 0 0 5px $medium-gray;
-$input-cursor-disabled: default;
+$input-cursor-disabled: not-allowed;
 $input-transition: box-shadow 0.5s, border-color 0.25s ease-in-out;
 $input-number-spinners: true;
 $input-radius: $global-radius;
@@ -567,4 +564,3 @@ $topbar-submenu-background: $topbar-background;
 $topbar-title-spacing: 1rem;
 $topbar-input-width: 200px;
 $topbar-unstack-breakpoint: medium;
-

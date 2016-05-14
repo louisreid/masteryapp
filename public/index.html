@@ -8,6 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="styles/foundation.css">
     <link rel="stylesheet" href="styles/main.css">
+    <link href="http://vjs.zencdn.net/5.9.2/video-js.css" rel="stylesheet">
   </head>
   <body ng-app="masteryApp">
     <div class="top-bar">
@@ -27,11 +28,81 @@
         </div>
     </div>
     <div class="videos-wrapper">
-      
+      <div class="row">
+        <div class="column small-8 small-offset-2">
+          <video id="my-video" class="video-js" controls preload="auto" width="640" height="264"
+        poster="MY_VIDEO_POSTER.jpg" data-setup="{}">
+            <source src="MY_VIDEO.mp4" type='video/mp4'>
+            <source src="MY_VIDEO.webm" type='video/webm'>
+            <p class="vjs-no-js">
+              To view this video please enable JavaScript, and consider upgrading to a web browser that
+              <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+            </p>
+          </video>
+        </div>
+      </div>
     </div>
-    <footer>
-      This is the footer
+    <div class="feedback">
+      <div class="row">
+        <div class="column small-8 small-offset-2">
+          <ul class="user-embed">
+            <li><img src="img/user-profile.png" alt=""></li>
+            <li class="user-embed__name">Daisy T</li> 
+            <li class="user-embed__username">(daisytarbek93)</li>
+            <li class="user-embed__score">| 9k</li>
+          </ul>
+  
+          <form action="">
+            <div class="comment">
+              <input type="text" placeholder="Write timed feedback" />
+              <ul class="comment__buttons">
+                <li><img src="img/comment-return.png" alt=""></li>
+                <li class="comment__buttons__text">add comment at 00:30</li>
+                <li><img src="img/comment-voice.png" alt=""></li>
+                <li><img src="img/comment-emoticon.png" alt=""></li>
+              </ul>
+            </div>
+
+            <ul class="feedback__stickers">
+              <li class="feedback__stickers__title">Add timed feedback:</li>
+              <li><img src="img/sticker-1.png" alt=""></li>
+              <li><img src="img/sticker-2.png" alt=""></li>
+              <li><img src="img/sticker-3.png" alt=""></li>
+              <li><img src="img/sticker-4.png" alt=""></li>
+              <li><img src="img/sticker-5.png" alt=""></li>
+              <li><img src="img/sticker-6.png" alt=""></li>
+              <li><img src="img/sticker-7.png" alt=""></li>
+              <li><img src="img/sticker-8.png" alt=""></li>
+              <li><img src="img/sticker-9.png" alt=""></li>
+              <li><img src="img/sticker-10.png" alt=""></li>
+              <li><img src="img/sticker-11.png" alt=""></li>
+              <li><img src="img/sticker-12.png" alt=""></li>
+            </ul>
+
+            <ul class="row main-buttons">
+              <li class="column small-3 main-buttons__promote">
+                <img src="img/main-buttons__check.png" alt="">
+                Promote
+              </li>
+              <li class="column small-3 main-buttons__pass">
+                <img src="img/main-buttons__cross.png" alt="">
+                Pass
+              </li>
+              <li class="column small-3 main-buttons__fail">
+                <img src="img/main-buttons__promote.png" alt="">
+                Fail
+              </li>
+              <li class="column small-3 main-buttons__return">
+                <img src="img/main-buttons__return.png" alt="">
+                Return
+              </li>
+            </ul>
+          </form>
+        </div>
+      </div>
     </footer>
+
+    <script src="http://vjs.zencdn.net/5.9.2/video.js"></script>
     <script src="vendor/angular.js"></script>
     <script src="vendor/foundation.min.js"></script>
     <script src="vendor/jquery.js"></script>
