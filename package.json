@@ -6,7 +6,8 @@
     "start": "node ."
   },
   "dependencies": {
-    "express": "4.13.4"
+    "express": "4.13.4",
+    "aws-sdk": "2.3.11"
   },
   "repository": {
     "type": "git",
