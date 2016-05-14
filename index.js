@@ -9,12 +9,18 @@ var uuid = require('node-uuid');
 var fs = require("fs");
 var path = require("path");
 var faststart = require('faststart');
-var stringify = require('node-stringify');
+var session = require('client-sessions');
 var config = require('./config.json');
 
 var app = express();
 app.use(morgan("combined"));
 app.use(bodyParser.json());
+app.use(session({
+  cookieName: 'session',
+  secret: process.env.SESSION_SECRET || "secret",
+  duration: 30 * 60 * 1000,
+  activeDuration: 5 * 60 * 1000,
+}));
 
 var s3 = new aws.S3({params: {Bucket: 'mastery-app'}});
 /*
@@ -95,7 +101,7 @@ app.get('/video/:video', function(req, res) {
           "Content-Range": "bytes " + start + "-" + end + "/" + total,
           "Accept-Ranges": "bytes",
           "Content-Length": chunksize,
-          "Content-Type": "video/mp4"
+          "Content-Type": data.ContentType
         });
     
       s3.getObject({Key: video, Range: req.headers.range}).createReadStream().pipe(res);
@@ -136,7 +142,7 @@ app.post('/video', multer({dest: tmp.dirSync().name}).single('file'), function(r
     faststart.createReadStream(req.file.path).pipe(fs.createWriteStream(path)).on('finish', function() {
       console.log("converted");
       var body = fs.createReadStream(path);
-      s3.upload({Key: video, Body: body}, function(err, data) {
+      s3.upload({Key: video, ContentType: req.file.mimetype, Body: body}, function(err, data) {
         console.log("uploaded", err, data);
 dynamoTopics.updateItem(
 {"Key": {"id": {"S": topic}},
