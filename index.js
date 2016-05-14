@@ -1,5 +1,7 @@
 var express = require('express');
 var aws = require('aws-sdk');
+var tmp = require('tmp');
+var faststart = require('faststart');
 var config = require('./config.json');
 
 var app = express();
@@ -62,9 +64,23 @@ app.get('/video.mp4', function(req, res) {
 
 app.put('/video.mp4', function(req, res) {
   var key = "video.mp4";
-  s3.upload({Key: key, Body: req}, function(err, data) {
-    console.log("upload", err, data);
-    res.end();
+  console.log("PUT", req.url);
+  tmp.file(function(err, path1, fd, cleanup1) {
+    req.pipe(fs.createWriteStream(path1)).on('finish', function() {
+      console.log("downloaded");
+      tmp.file(function(err, path2, fd, cleanup2) {
+        faststart.createReadStream(path1).pipe(fs.createWriteStream(path2)).on('finish', function() {
+          console.log("converted");
+          cleanup1();
+          var body = fs.createReadStream(path2);
+          s3.upload({Key: key, Body: body}, function(err, data) {
+            console.log("uploaded", err, data);
+            res.end();
+            cleanup2();
+          });
+        });
+      });
+    });
   });
 });
 
