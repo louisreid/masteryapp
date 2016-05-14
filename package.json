@@ -1,0 +1,18 @@
+{
+  "name": "mastery",
+  "version": "0.1.0",
+  "description": "mastery",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "4.13.4"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/louisreid/masteryapp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/louisreid/masteryapp/issues"
+  }
+}
