@@ -88,6 +88,7 @@ app.put('/video.mp4', function(req, res) {
 
 
 app.use('/', express.static(__dirname + '/public'));
+app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
 
 app.listen(process.env.PORT || 80);
