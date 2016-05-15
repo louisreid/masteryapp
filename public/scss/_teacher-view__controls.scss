@@ -51,6 +51,12 @@
       }
     }
   }
+  .typeahead {
+    list-style-type: none;
+    margin: 0;
+    background-color: $white; 
+    position: relative;
+  }
 }
 
 .feedback__stickers {

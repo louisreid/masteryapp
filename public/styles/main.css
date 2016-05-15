@@ -3646,6 +3646,11 @@ body {
       color: #cacaca; }
       .comment .comment__buttons li img {
         width: 1.0em; }
+  .comment .typeahead {
+    list-style-type: none;
+    margin: 0;
+    background-color: #fefefe;
+    position: relative; }
 
 .feedback__stickers {
   list-style-type: none;
