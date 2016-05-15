@@ -3609,7 +3609,8 @@ body {
   width: 100%;
   overflow: hidden;
   background-color: #e6e6e6;
-  padding: 10px; }
+  padding: 10px;
+  z-index: 100; }
 
 .user-embed {
   margin: 0.8em 0;
