@@ -16,7 +16,7 @@
 	}
 }
 
-.assignment {
+.assignment, .upload {
 	background-color: $light-gray;
 	border-radius: $global-radius;
 	@extend .dropshadow;
@@ -61,3 +61,17 @@
 	color: $red;
 }
 
+.upload {
+	form {
+		div {
+			padding: 3em;
+			h5 {
+				text-align: center;
+				font-weight: $global-weight-bold;
+				i {
+					padding-left: 1em;
+				}
+			}
+		}
+	}
+}

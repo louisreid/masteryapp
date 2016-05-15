@@ -3,22 +3,22 @@
     <div class="marking-playlist">
       <div class="row">
         <div class="small-10 small-offset-1">
-        <div class="row">
-          <div class="small-6 column marking-playlist__title">
-            <h4>{{assignment.summary}}</h4>
-            <p>{{assignment.detail}}</p>
+          <div class="row">
+            <div class="small-6 column marking-playlist__title">
+              <h4>{{assignment.summary}}</h4>
+              <p>{{assignment.detail}}</p>
+            </div>
+            <div class="small-6 column marking-playlist__dates">
+              <ul>
+                <li class="text-right">
+                  set: <span class="assignment__set">{{assignment.setDate | date }}</span>
+                </li>
+                <li class="text-right">
+                  due: <span class="assignment__due">{{assignment.dueDate | date }}</span>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div class="small-6 column marking-playlist__dates">
-            <ul>
-              <li class="text-right">
-                set: <span class="assignment__set">{{assignment.setDate | date }}</span>
-              </li>
-              <li class="text-right">
-                due: <span class="assignment__due">{{assignment.dueDate | date }}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
           <div class="row small-up-4">
             <div ng-repeat="video in assignment.videos | filterVideosToUser: user" class="column video-thumbnail">
               <img ng-src="{{video.id | thumbUrl}}" ng-click="switchTo()" />
@@ -31,11 +31,16 @@
       </div>
     </div>
   </div>
-  <form action="/video" id="videoDropzoneForm" class="dropzone">
-    <div class="fallback">
-      <input name="file" type="file" id="videoDropzone" />
+  <div class="row">
+    <div class="small-8 small-offset-2 column upload">
+      <form action="/video" id="videoDropzoneForm" class="dropzone">
+        <div class="fallback">
+          <input name="file" type="file" id="videoDropzone" />
+          <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+        </div>
+      </form>
     </div>
-  </form>
+  </div>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="vendor/foundation.min.js"></script>
 </div>
