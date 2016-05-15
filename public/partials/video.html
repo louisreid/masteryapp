@@ -72,14 +72,36 @@
       </div>
     </div>
 
-    <div class="marking-playlist">
-      <div class="row">
-        Other unmarked videos for {{assignment.summary}}
+    <div class="row">
         <div class="small-10 small-offset-1">
-          <img ng-repeat="video in assignment.videos | otherUnmarkedVideos: video" ng-src="{{video.id | thumbUrl}}" ng-click="switchTo()" />
+        <div class="row">
+          <div class="small-6 column marking-playlist__title">
+            <h4>{{assignment.summary}}</h4>
+            <p>{{assignment.detail}}</p>
+          </div>
+          <div class="small-6 column marking-playlist__dates">
+            <ul>
+              <li class="text-right">
+                set: <span class="assignment__set">{{assignment.setDate | date }}</span>
+              </li>
+              <li class="text-right">
+                due: <span class="assignment__due">{{assignment.dueDate | date }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+          <div class="row small-up-4">
+            <div ng-repeat="video in assignment.videos | sortVideos" class="column video-thumbnail">
+              <img ng-src="{{video.id | thumbUrl}}" ng-click="switchTo()" />
+              <div class="video-thumbnail__play">
+                <i class="fa fa-play-circle" aria-hidden="true"></i>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
 
   </div>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>

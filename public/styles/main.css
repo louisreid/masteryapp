@@ -3710,7 +3710,10 @@ body {
   height: 100%; }
 
 .video-thumbnail {
+  position: relative;
   margin-bottom: 1em; }
+  .video-thumbnail img {
+    border-radius: 0.2em; }
   .video-thumbnail .video-thumbnail__play {
     position: absolute;
     top: 32%;
@@ -3718,9 +3721,14 @@ body {
     .video-thumbnail .video-thumbnail__play i {
       color: #e6e6e6;
       font-size: 3.3em; }
+  .video-thumbnail:hover .video-thumbnail__play {
+    opacity: 0.8; }
 
 .video-thumbnail--current .video-thumbnail__play {
   display: none; }
+
+.marking-playlist {
+  padding-top: 1em; }
 
 .marking-playlist__title h4 {
   font-weight: bold; }

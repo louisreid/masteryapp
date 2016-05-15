@@ -1,5 +1,9 @@
 .video-thumbnail {
+	position: relative;
 	margin-bottom: 1em;
+	img {
+		border-radius: $global-radius;
+	}
 	.video-thumbnail__play {
 		position: absolute;
     top: 32%;
@@ -8,6 +12,11 @@
 	    color: $light-gray;
 	    font-size: 3.3em;
     }
+	}
+	&:hover {
+		.video-thumbnail__play {
+			opacity: 0.8;
+		}
 	}
 }
 
