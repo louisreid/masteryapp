@@ -82,7 +82,7 @@ app.put('/user/:user', function(req, res) {
                                                         ":score": {"N": "" + score}}},
     function (err, data) {
       console.log("dynamoUsers.updateItem", err, data);
-      res.end(err.code);
+      res.end();
     });
 });
 
