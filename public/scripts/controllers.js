@@ -77,9 +77,41 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
     };
   }]);
 
-masteryControllers.controller('PhoneDetailCtrl', ['$scope', '$routeParams',
-  function($scope, $routeParams) {
-    $scope.phoneId = $routeParams.phoneId;
+masteryControllers.controller('DashboardCtrl', ['$scope', '$location', '$routeParams', '$http',
+  function ($scope, $location, $routeParams, $http) {
+    $scope.userId = $routeParams.user;
+    $http.get('user/' + $scope.userId).success(function(userData) {
+      console.log(userData);
+      async.map(userData.assignments || [], function(assignmentId, callback) {
+        $http.get('assignment/' + assignmentId).success(function(data) {
+          console.log(data);
+          callback(null, data);
+        });
+      }, function (err, data) {
+        $scope.user = userData;
+        $scope.assignments = data;
+      });
+    });
+
+    $scope.switchToAssignment = function() {
+      $location.path("/assignment/" + this.assignment.id);
+    };
+    $scope.switchToVideo = function() {
+      $location.path("/video/" + this.video.id);
+    };
+  }]);
+
+masteryControllers.controller('AssignmentCtrl', ['$scope', '$location', '$routeParams', '$http',
+  function ($scope, $location, $routeParams, $http) {
+    $scope.assignmentId = $routeParams.assignment;
+    $http.get('assignment/' + $scope.assignmentId).success(function(data) {
+      console.log(data);
+      $scope.assignment = data;
+    });
+
+    $scope.switchTo = function() {
+      $location.path("/video/" + this.video.id);
+    };
   }]);
 
 masteryControllers.directive("timeUpdate", function() {

@@ -1,0 +1,16 @@
+<div>
+  <div class="main-wrapper">
+    <div class="marking-playlist">
+      <h2>{{assignment.summary}}</h2>
+      <p>{{assignment.detail}}</p>
+      <div class="row">
+        <div class="small-10 small-offset-1">
+          <img ng-repeat="video in assignment.videos | sortVideos" ng-src="{{video.id | thumbUrl}}" ng-click="switchTo()" />
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="vendor/foundation.min.js"></script>
+</div>

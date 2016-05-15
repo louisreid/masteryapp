@@ -1,0 +1,22 @@
+<div>
+  <div class="main-wrapper">
+    <div class="marking-playlist">
+      <ul class="user-embed">
+        <li><img src="img/user-profile.png" alt=""></li>
+        <li class="user-embed__name">{{user.name}}</li>
+        <li class="user-embed__username">({{user.id}})</li>
+        <li class="user-embed__score">| {{user.score}}</li>
+      </ul>
+      <ul>
+        <li ng-repeat="assignment in assignments">
+          <h3>{{assignment.summary}}</h3>
+          <p>{{assignment.detail}}</p>
+          <span ng-click="switchToAssignment()" >Go ({{assignment.videos.length}} videos)</span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+  <script src="bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="vendor/foundation.min.js"></script>
+</div>

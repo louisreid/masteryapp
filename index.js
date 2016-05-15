@@ -46,7 +46,7 @@ app.get('/user/:user', function(req, res) {
   dynamoUsers.getItem({"Key": {"id": {"S": user}}}, function (err, data) {
     console.log("dynamoUsers.getItem", err, data);
     if (err) {
-      res.end(err);
+      res.end(err.code);
     } else {
       var videos = data.Item.videos ? data.Item.videos.SS : [];
       var promotedVideos = data.Item.promotedVideos ? data.Item.promotedVideos.SS : [];
@@ -65,6 +65,7 @@ app.get('/user/:user', function(req, res) {
       var obj = {"id": user,
                  "name": (data.Item.displayName) ? data.Item.displayName.S : "",
                  "score": (data.Item.score) ? Number(data.Item.score.N) : 0,
+                 "assignments": (data.Item.assignments) ? data.Item.assignments.SS : [],
                  "videos": aggregatedVideos};
       res.json(obj);
     }
@@ -81,7 +82,7 @@ app.put('/user/:user', function(req, res) {
                                                         ":score": {"N": "" + score}}},
     function (err, data) {
       console.log("dynamoUsers.updateItem", err, data);
-      res.end(err);
+      res.end(err.code);
     });
 });
 
@@ -90,7 +91,7 @@ app.get('/assignment/:assignment', function(req, res) {
   dynamoAssignments.getItem({"Key": {"id": {"S": assignment}}}, function (err, data) {
     console.log("dynamoAssignments.getItem", err, data);
     if (err) {
-      res.end(err);
+      res.end(err.code);
     } else {
       var videos = data.Item.videos ? data.Item.videos.SS : [];
       var promotedVideos = data.Item.promotedVideos ? data.Item.promotedVideos.SS : [];
@@ -119,14 +120,23 @@ app.put('/assignment/:assignment', function(req, res) {
   var assignment = req.params.assignment;
   var summary = req.body.summary ? req.body.summary : "";
   var detail = req.body.detail ? req.body.detail : "";
+  var users = req.body.users ? req.body.users : []; // TODO: Shouldn't really be part of a PUT - not actually part of the resource.
   dynamoAssignments.updateItem({"Key": {"id": {"S": assignment}},
                                 "UpdateExpression": "SET summary = :summary, detail = :detail",
                                 "ExpressionAttributeValues": {":summary": {"S": summary},
                                                               ":detail": {"S": detail}}},
     function (err, data) {
-      console.log("dynamoUsers.updateItem", err, data);
-      res.end(err);
+      console.log("dynamoAssignments.updateItem", err, data);
+      res.end(err.code);
     });
+  async.each(users, function(user, callback) {
+    dynamoUsers.updateItem({"Key": {"id": {"S": user}},
+                            "UpdateExpression": "ADD assignments :assignment",
+                            "ExpressionAttributeValues": {":assignment": {"SS": [assignment]}}},
+      callback);
+  }, function (err) {
+    console.log("async.each(dynamoUsers.updateItem) failed", err);
+  });
 });
 
 app.get('/video/:video/data', function(req, res) {
@@ -134,7 +144,7 @@ app.get('/video/:video/data', function(req, res) {
   dynamoVideos.getItem({"Key": {"id": {"S": video}}}, function (err, data) {
     console.log("dynamoVideos.getItem", err, data);
     if (err) {
-      res.end(err);
+      res.end(err.code);
     } else {
       var obj = {"assignment": (data.Item.assignment) ? data.Item.assignment.S : "",
                  "user": (data.Item.user) ? data.Item.user.S : "",
@@ -156,7 +166,7 @@ app.post('/video/:video', function(req, res) {
   dynamoVideos.getItem({"Key": {"id": {"S": video}}}, function (err, data) {
     console.log("dynamoVideos.getItem", err, data);
     if (err) {
-      res.end(err);
+      res.end(err.code);
     } else {
       var assignment = (data.Item.assignment) ? data.Item.assignment.S : null;
       var user = (data.Item.user) ? data.Item.user.S : null;
@@ -237,7 +247,7 @@ app.put('/video/:video/note', function(req, res) {
                            "ExpressionAttributeValues": {":note": {"SS": [note]}}},
     function (err, data) {
       console.log("dynamoVideos.updateItem", err, data);
-      res.end();
+      res.end(err.code);
     });
 });
 
@@ -247,10 +257,7 @@ app.get('/video/:video/thumb.png', function(req, res) {
     console.log("headObject:", err, data);
     if (err) {
       // TODO: Handle better!
-      res.end(err);
-    } else if (data.statusCode >= 400) {
-      // TODO: Handle better!
-      res.end(data);
+      res.end(err.code);
     } else {
       res.writeHead(200, {
         "Content-Length": data.ContentLength,
@@ -267,10 +274,7 @@ app.get('/video/:video', function(req, res) {
     console.log("headObject:", err, data);
     if (err) {
       // TODO: Handle better!
-      res.end(err);
-    } else if (data.statusCode >= 400) {
-      // TODO: Handle better!
-      res.end(data);
+      res.end(err.code);
     } else {
       var total = data.ContentLength;
   
@@ -371,7 +375,7 @@ app.post('/video', multer({dest: tmp.dirSync().name}).single('file'), function(r
                   } else {
                     var doc = resp.body.actions[0].result.document.map(function(e) {
                       return {"content": e.content, "timestamp": e.offset / 1000};
-                    );
+                    });
                     console.log("recognizespeech transcribed to", doc);
                     dynamoVideos.updateItem({"Key": {"id": {"S": video}},
                                              "UpdateExpression": "SET transcript = :transcript",

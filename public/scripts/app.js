@@ -12,17 +12,17 @@ config(['$routeProvider', function($routeProvider) {
     templateUrl: 'partials/video.html',
     controller: 'VideoCtrl'
   }).
-  when('/dashboard', {
+  when('/dashboard/:user', {
     templateUrl: 'partials/dashboard.html',
     controller: 'DashboardCtrl'
   }).
-  when('/assignments', {
-    templateUrl: 'partials/assignments.html',
-    controller: 'AssignmentsCtrl'
+  when('/assignment/:assignment', {
+    templateUrl: 'partials/assignment.html',
+    controller: 'AssignmentCtrl'
   }).
   when('/class', {
     templateUrl: 'partials/class.html',
     controller: 'ClassCtrl'
   }).
-  otherwise({redirectTo: '/video/ad50db0f-6346-4866-a1cd-57fa53834f13'});
+  otherwise({redirectTo: '/dashboard/daisytarbek93'});
 }]);

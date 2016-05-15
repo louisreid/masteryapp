@@ -27,4 +27,22 @@ filter('otherUnmarkedVideos', function() {
     });
     return filtered;
   };
+}).
+filter('sortVideos', function() {
+  return function(items) {
+    items = items || [];
+    var sorted = items.slice();
+    sorted.sort(function(other) {
+      if ((!this.marked) && (other.marked)) { return -1; }
+      else if ((this.marked) && (!other.marked)) { return 1; }
+      else if ((this.promoted) && (!other.promoted)) { return -1; }
+      else if ((!this.promoted) && (other.promoted)) { return 1; }
+      else if ((this.passed) && (!other.passed)) { return -1; }
+      else if ((!this.passed) && (other.passed)) { return 1; }
+      else if ((this.returned) && (!other.returned)) { return -1; }
+      else if ((!this.returned) && (other.returned)) { return 1; }
+      else { return 0; }
+    });
+    return sorted;
+  };
 });
