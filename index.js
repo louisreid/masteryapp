@@ -233,7 +233,6 @@ app.post('/video/:video', function(req, res) {
           console.log("dynamoUsers.updateItem", err, data);
         });
       console.log(setList, setValues);
-console.log("SET " + setList.join(", "));
       dynamoVideos.updateItem({"Key": {"id": {"S": video}},
                                "UpdateExpression": "SET " + setList.join(", "),
                                "ExpressionAttributeValues": setValues},
@@ -248,13 +247,27 @@ console.log("SET " + setList.join(", "));
 app.put('/video/:video/note', function(req, res) {
   var video = req.params.video;
   var note = JSON.stringify(req.body);
-  dynamoVideos.updateItem({"Key": {"id": {"S": video}},
-                           "UpdateExpression": "ADD notes :note",
-                           "ExpressionAttributeValues": {":note": {"SS": [note]}}},
-    function (err, data) {
-      console.log("dynamoVideos.updateItem", err, data);
-      res.end(err);
+
+  function doUpdate(note) {
+    dynamoVideos.updateItem({"Key": {"id": {"S": video}},
+                             "UpdateExpression": "ADD notes :note",
+                             "ExpressionAttributeValues": {":note": {"SS": [note]}}},
+      function (err, data) {
+        console.log("dynamoVideos.updateItem", err, data);
+        res.end(err);
+      });
+  };
+
+  if (req.body.note) {
+    console.log("Doing analyzesentiment");
+    hodClient.call('analyzesentiment', {text: req.body.note}, function(err, resp, body) {
+      req.body.sentiment = resp.body.aggregate.score;
+      note = JSON.stringify(req.body);
+      doUpdate(note);
     });
+  } else {
+    doUpdate(note);
+  }
 });
 
 app.get('/video/:video/thumb.png', function(req, res) {
@@ -399,6 +412,8 @@ app.post('/video', multer({dest: tmp.dirSync().name}).single('file'), function(r
     });
   });
 });
+
+
 
 
 

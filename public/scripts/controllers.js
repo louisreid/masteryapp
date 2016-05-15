@@ -39,7 +39,6 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
     $scope.addNote = function() {
       var note = {"timestamp": $scope.timestamp, "note": $scope.noteText};
       var comments = JSON.parse(localStorage.previousComments || "[]");
-      console.log(comments);
       comments = comments.filter(function (x) { return x != $scope.noteText; });
       comments.splice(0, 0, $scope.noteText);
       $scope.previousComments = comments;
@@ -53,7 +52,6 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
       var note = {"timestamp": $scope.timestamp, "sticker": sticker};
       if ($scope.noteText) {
         var comments = JSON.parse(localStorage.previousComments || "[]");
-        console.log(comments);
         comments = comments.filter(function (x) { return x != $scope.noteText; });
         comments.splice(0, 0, $scope.noteText);
         $scope.previousComments = comments;
