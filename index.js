@@ -110,6 +110,8 @@ app.get('/assignment/:assignment', function(req, res) {
       var obj = {"id": assignment,
                  "summary": (data.Item.summary) ? data.Item.summary.S : "",
                  "detail": (data.Item.detail) ? data.Item.detail.S : "",
+                 "setDate": (data.Item.setDate) ? Number(data.Item.setDate.N) : 0,
+                 "dueDate": (data.Item.dueDate) ? Number(data.Item.dueDate.N) : 0,
                  "videos": aggregatedVideos};
       res.json(obj);
     }
@@ -120,14 +122,18 @@ app.put('/assignment/:assignment', function(req, res) {
   var assignment = req.params.assignment;
   var summary = req.body.summary ? req.body.summary : "";
   var detail = req.body.detail ? req.body.detail : "";
+  var setDate = req.body.setDate ? req.body.setDate : new Date().getTime();
+  var dueDate = req.body.dueDate ? req.body.dueDate : new Date().getTime() + 3 * 24 * 60 * 60 * 1000;
   var users = req.body.users ? req.body.users : []; // TODO: Shouldn't really be part of a PUT - not actually part of the resource.
   dynamoAssignments.updateItem({"Key": {"id": {"S": assignment}},
-                                "UpdateExpression": "SET summary = :summary, detail = :detail",
+                                "UpdateExpression": "SET summary = :summary, detail = :detail, setDate = :setDate, dueDate = :dueDate",
                                 "ExpressionAttributeValues": {":summary": {"S": summary},
-                                                              ":detail": {"S": detail}}},
+                                                              ":detail": {"S": detail},
+                                                              ":setDate": {"N": "" + setDate},
+                                                              ":dueDate": {"N": "" + dueDate}}},
     function (err, data) {
       console.log("dynamoAssignments.updateItem", err, data);
-      res.end(err.code);
+      res.end();
     });
   async.each(users, function(user, callback) {
     dynamoUsers.updateItem({"Key": {"id": {"S": user}},
