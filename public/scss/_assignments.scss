@@ -23,7 +23,7 @@
 	@extend .clearfix;
 	&:hover {
 		cursor: pointer;
-		opacity: 0.8;
+		opacity: 0.7;
 	}
 }
 
@@ -62,10 +62,15 @@
 }
 
 .upload {
+	margin: 1em 0;
 	form {
+		background: none;
+		border: none;
 		div {
 			padding: 3em;
-			h5 {
+			margin: 0;
+			span {
+				font-size: 1.5em;	
 				text-align: center;
 				font-weight: $global-weight-bold;
 				i {

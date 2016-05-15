@@ -3695,7 +3695,7 @@ body {
   border-radius: 0.2em; }
   .assignment:hover, .upload:hover {
     cursor: pointer;
-    opacity: 0.8; }
+    opacity: 0.7; }
 
 .assignment__titles {
   float: left;
@@ -3725,13 +3725,20 @@ body {
   font-weight: bold;
   color: #FF4136; }
 
-.upload form div {
-  padding: 3em; }
-  .upload form div h5 {
-    text-align: center;
-    font-weight: bold; }
-    .upload form div h5 i {
-      padding-left: 1em; }
+.upload {
+  margin: 1em 0; }
+  .upload form {
+    background: none;
+    border: none; }
+    .upload form div {
+      padding: 3em;
+      margin: 0; }
+      .upload form div span {
+        font-size: 1.5em;
+        text-align: center;
+        font-weight: bold; }
+        .upload form div span i {
+          padding-left: 1em; }
 
 .video-thumbnail {
   position: relative;
