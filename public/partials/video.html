@@ -8,6 +8,7 @@
     <div class="row">
       <div class="column small-8 small-offset-2">
         <ul class="user-embed">
+          <li>Marking: </li>
           <li><img src="img/user-profile.png" alt=""></li>
           <li class="user-embed__name">{{user.name}}</li>
           <li class="user-embed__username">({{user.id}})</li>
@@ -64,7 +65,7 @@
             <source ng-src="{{video | videoUrl}}" />
             <!-- TODO: Specify type -->
           </video>
-          <div class="transcript">
+          <div class="current-video__transcript">
             <h6>Transcript</h6>
             <span ng-repeat="chunk in transcript" ng-click="skipToChunk()" ng-class="{highlight: timestampInChunk()}"> {{chunk.content}} </span>
           </div>

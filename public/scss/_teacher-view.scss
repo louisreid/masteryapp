@@ -37,7 +37,7 @@ body {
   } 
 }
 
-.transcript {
+.current-video__transcript {
   background-color: $light-gray;
   padding: 1em;
   margin: 0.8em 0;
@@ -46,6 +46,10 @@ body {
     font-weight: $global-weight-bold;
   }
 }
+.current-video__transcript .highlight {
+    background-color: map-get($foundation-palette, primary);
+  }
+
 
 .marking-playlist {
   background-color: $medium-gray;
