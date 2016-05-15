@@ -3649,8 +3649,7 @@ body {
   .comment .typeahead {
     list-style-type: none;
     margin: 0;
-    background-color: #fefefe;
-    position: relative; }
+    background-color: #fefefe; }
 
 .feedback__stickers {
   list-style-type: none;
