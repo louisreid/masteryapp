@@ -34,3 +34,5 @@ manifest.yml
 #Misc
 codekit.config
 .codekit-cache
+public/scss/.sass-cache
+

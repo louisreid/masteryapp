@@ -3592,12 +3592,12 @@ body {
       color: #0a0a0a;
       padding-right: 0.5em; }
 
-.current-video__transcript {
+.transcript {
   background-color: #e6e6e6;
   padding: 1em;
   margin: 0.8em 0;
   border-radius: 0.2em; }
-  .current-video__transcript h6 {
+  .transcript h6 {
     font-weight: bold; }
 
 .marking-playlist {
