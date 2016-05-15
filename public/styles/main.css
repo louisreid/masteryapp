@@ -3649,6 +3649,10 @@ body {
     margin-right: 0.3em; }
     .feedback__stickers li img {
       width: 1.8em; }
+    .feedback__stickers li:hover {
+      cursor: pointer; }
+      .feedback__stickers li:hover img {
+        opacity: 0.8em; }
 
 .main-buttons {
   list-style-type: none;
@@ -3660,6 +3664,9 @@ body {
     padding: 0.8em 3em;
     border-right: 1px white solid;
     text-align: center; }
+    .main-buttons li:hover {
+      cursor: pointer;
+      opacity: 0.8em; }
   .main-buttons li:first-child {
     border-top-left-radius: 0.2em;
     border-bottom-left-radius: 0.2em; }
