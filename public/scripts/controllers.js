@@ -34,7 +34,7 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
     $scope.timestampInChunk = function() {
       var nextChunkTimestamp = ($scope.transcript.length > this.$index + 1) ? $scope.transcript[this.$index + 1].timestamp : 1.0/0.0;
       var endChunkTimestamp = Math.min(this.chunk.timestamp + 1, nextChunkTimestamp);
-      return (($scope.timestamp >= this.chunk.timestamp) && ($scope.timestamp < endChunkTimestamp));
+      return (($scope.timestamp + 0.499 >= this.chunk.timestamp) && ($scope.timestamp + 0.499 < endChunkTimestamp)); // Add a little on because the currentTime seems to lag a bit
     };
     $scope.addNote = function() {
       var note = {"timestamp": $scope.timestamp, "note": $scope.noteText};
@@ -157,7 +157,7 @@ masteryControllers.directive("timeUpdate", function() {
     require: "ngModel",
     link: function(scope, el, attrs, ngModel) {
       el[0].ontimeupdate = function() {
-        ngModel.$setViewValue(Math.floor(el[0].currentTime) + 0.499); // Add a little on because the currentTime seems to lag a bit
+        ngModel.$setViewValue(Math.floor(el[0].currentTime));
       }
 
       ngModel.$render = function() {
