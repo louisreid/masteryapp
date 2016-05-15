@@ -3592,6 +3592,12 @@ body {
       color: #0a0a0a;
       padding-right: 0.5em; }
 
+.current-video__transcript {
+  background-color: #e6e6e6;
+  padding: 1em;
+  margin: 0.8em 0;
+  border-radius: 0.2em; }
+
 .marking-playlist {
   background-color: #cacaca; }
 

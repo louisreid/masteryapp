@@ -1,8 +1,8 @@
 <div>
   <style>
-    body {
-      padding-bottom: 230px;
-    }
+  body {
+    padding-bottom: 230px;
+  }
   </style>
   <div class="feedback">
     <div class="row">
@@ -61,9 +61,10 @@
       <div class="small-8 small-offset-2">
         <div class="current-video">
           <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" ng-attr-poster="{{video | thumbUrl}}" data-setup="{}" time-update ng-model="timestamp">
-            <source ng-src="{{video | videoUrl}}" /><!-- TODO: Specify type -->
+            <source ng-src="{{video | videoUrl}}" />
+            <!-- TODO: Specify type -->
           </video>
-          <div class="transcript">
+          <div class="current-video__transcript">
             <span ng-repeat="chunk in transcript" ng-click="skipToChunk()" ng-class="{highlight: timestampInChunk()}"> {{chunk.content}} </span>
           </div>
           <ul class="current-video__comments">
@@ -76,25 +77,25 @@
         </div>
       </div>
     </div>
-
-    <div class="row">
+    <div class="marking-playlist">
+      <div class="row">
         <div class="small-10 small-offset-1">
-        <div class="row">
-          <div class="small-6 column marking-playlist__title">
-            <h4>{{assignment.summary}}</h4>
-            <p>{{assignment.detail}}</p>
+          <div class="row">
+            <div class="small-6 column marking-playlist__title">
+              <h4>{{assignment.summary}}</h4>
+              <p>{{assignment.detail}}</p>
+            </div>
+            <div class="small-6 column marking-playlist__dates">
+              <ul>
+                <li class="text-right">
+                  set: <span class="assignment__set">{{assignment.setDate | date }}</span>
+                </li>
+                <li class="text-right">
+                  due: <span class="assignment__due">{{assignment.dueDate | date }}</span>
+                </li>
+              </ul>
+            </div>
           </div>
-          <div class="small-6 column marking-playlist__dates">
-            <ul>
-              <li class="text-right">
-                set: <span class="assignment__set">{{assignment.setDate | date }}</span>
-              </li>
-              <li class="text-right">
-                due: <span class="assignment__due">{{assignment.dueDate | date }}</span>
-              </li>
-            </ul>
-          </div>
-        </div>
           <div class="row small-up-4">
             <div ng-repeat="video in assignment.videos | sortVideos" class="column video-thumbnail">
               <img ng-src="{{video.id | thumbUrl}}" ng-click="switchTo()" />
@@ -106,31 +107,30 @@
         </div>
       </div>
     </div>
-
-
   </div>
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="vendor/foundation.min.js"></script>
-  <script>
-  // Once the video is ready
-  _V_("example_video_1").ready(function() {
+</div>
+<script src="bower_components/jquery/dist/jquery.min.js"></script>
+<script src="vendor/foundation.min.js"></script>
+<script>
+// Once the video is ready
+_V_("example_video_1").ready(function() {
 
-    // Store the video object
-    var myPlayer = this;
-    // Make up an aspect ratio
-    var aspectRatio = 720 / 1280;
+  // Store the video object
+  var myPlayer = this;
+  // Make up an aspect ratio
+  var aspectRatio = 720 / 1280;
 
-    function resizeVideoJS() {
-      var width = document.getElementById(myPlayer.id).parentElement.offsetWidth;
-      myPlayer.width(width).height(width * aspectRatio);
+  function resizeVideoJS() {
+    var width = document.getElementById(myPlayer.id).parentElement.offsetWidth;
+    myPlayer.width(width).height(width * aspectRatio);
 
-    }
+  }
 
-    // Initialize resizeVideoJS()
-    resizeVideoJS();
-    // Then on resize call resizeVideoJS()
-    window.onresize = resizeVideoJS;
+  // Initialize resizeVideoJS()
+  resizeVideoJS();
+  // Then on resize call resizeVideoJS()
+  window.onresize = resizeVideoJS;
 
-  });
-  </script>
+});
+</script>
 </div>

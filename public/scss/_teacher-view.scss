@@ -37,6 +37,13 @@ body {
   } 
 }
 
+.current-video__transcript {
+  background-color: $light-gray;
+  padding: 1em;
+  margin: 0.8em 0;
+  border-radius: $global-radius;
+}
+
 .marking-playlist {
   background-color: $medium-gray;
 }
