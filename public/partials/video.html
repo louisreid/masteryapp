@@ -10,7 +10,21 @@
         </ul>
         <form action="" ng-submit="addNote()">
           <div class="comment">
-            <input type="text" placeholder="Write timed feedback" ng-model="noteText" />
+            <div mass-autocomplete>
+              <input type="text" placeholder="Write timed feedback" ng-model="noteText"
+                     mass-autocomplete-item="previousComments">
+
+    <div class="ac-container" ng-show="show_autocomplete && results.length" style="position:absolute;">
+      <ul class="ac-menu">
+        <li ng-repeat="result in results"
+          ng-if="$index > 0"
+          class="ac-menu-item"
+          ng-class="$index == selected_index ? 'ac-state-focus' : ''">
+          <a href ng-click="apply_selection($index, $event)" ng-bind-html=result.label> </a>
+        </li>
+      </ul>
+    </div>
+            </div>
             <ul class="comment__buttons">
               <li><img src="img/comment-return.png" alt=""></li>
               <li class="comment__buttons__text">add comment at {{timestamp | timestamp}}</li>

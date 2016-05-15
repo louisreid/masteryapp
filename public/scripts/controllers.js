@@ -1,4 +1,4 @@
-var masteryControllers = angular.module('masteryControllers', []);
+var masteryControllers = angular.module('masteryControllers', ['ngSanitize', 'MassAutoComplete']);
 
 masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', '$http',
   function ($scope, $route, $routeParams, $http) {
@@ -26,7 +26,7 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
       $scope.timestamp = this.note.timestamp;
     };
     $scope.skipToChunk = function() {
-      $scope.timestamp = this.chunk.timestamp;
+      $scope.timestamp = this.chunk.timestamp + 0.25; // Add a little on to avoid jumping back to the previous chunk when the video player rounds
     };
     $scope.switchTo = function() {
       $route.updateParams({video: this.video.id});
@@ -38,6 +38,12 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
     };
     $scope.addNote = function() {
       var note = {"timestamp": $scope.timestamp, "note": $scope.noteText};
+      var comments = JSON.parse(localStorage.previousComments || "[]");
+console.log($scope);
+      console.log(comments);
+      comments = comments.filter(function (x) { return x != $scope.noteText; });
+      comments.splice(0, 0, $scope.noteText);
+      localStorage.previousComments = JSON.stringify(comments);
       $http.put('video/' + $scope.video + "/note", JSON.stringify(note), {headers: {"Content-Type": "application/json"}}).success(function(data) {
         $scope.notes.push(note);
       });
@@ -47,6 +53,11 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
       var note = {"timestamp": $scope.timestamp, "sticker": sticker};
       if ($scope.noteText) {
         note.note = $scope.noteText;
+        var comments = JSON.parse(localStorage.previousComments || "[]");
+        console.log(comments);
+        comments = comments.filter(function (x) { return x != $scope.noteText; });
+        comments.splice(0, 0, $scope.noteText);
+        localStorage.previousComments = JSON.stringify(comments);
       }
       $http.put('video/' + $scope.video + "/note", JSON.stringify(note), {headers: {"Content-Type": "application/json"}}).success(function(data) {
         $scope.notes.push(note);
@@ -75,6 +86,18 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
         $scope.returned = false;
       });
     };
+    $scope.previousComments = {suggest: function(term) {
+      var comments = JSON.parse(localStorage.previousComments || "[]");
+      var q = term.toLowerCase().trim();
+      var results = [{label:"Hello", value:"Hello"}];
+      // Find first 10 comments that start with `term`.
+      for (var i = 0; i < comments.length && results.length < 10; i++) {
+        var comment = comments[i];
+        if (comment && comment.toLowerCase().indexOf(q) === 0)
+          results.push({ label: comment, value: comment });
+      }
+      return results;
+    }};
   }]);
 
 masteryControllers.controller('DashboardCtrl', ['$scope', '$location', '$routeParams', '$http',

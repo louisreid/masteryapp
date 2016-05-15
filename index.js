@@ -247,7 +247,7 @@ app.put('/video/:video/note', function(req, res) {
                            "ExpressionAttributeValues": {":note": {"SS": [note]}}},
     function (err, data) {
       console.log("dynamoVideos.updateItem", err, data);
-      res.end(err.code);
+      res.end();
     });
 });
 
