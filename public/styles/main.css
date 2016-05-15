@@ -3551,11 +3551,16 @@ table.hover tr:nth-of-type(even):hover {
   margin-left: auto;
   margin-right: auto; }
 
-.clearfix::before, .user-embed::before, .comment .comment__buttons::before, .feedback__stickers::before, .clearfix::after, .user-embed::after, .comment .comment__buttons::after, .feedback__stickers::after {
+.clearfix::before, .user-embed::before, .comment .comment__buttons::before, .feedback__stickers::before, .assignments__top-bar--right::before, .clearfix::after, .user-embed::after, .comment .comment__buttons::after, .feedback__stickers::after, .assignments__top-bar--right::after {
   content: ' ';
   display: table; }
-.clearfix::after, .user-embed::after, .comment .comment__buttons::after, .feedback__stickers::after {
+.clearfix::after, .user-embed::after, .comment .comment__buttons::after, .feedback__stickers::after, .assignments__top-bar--right::after {
   clear: both; }
+
+.dropshadow, .assignment {
+  -webkit-box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0px 1px 1px 0px rgba(0, 0, 0, 0.5); }
 
 body {
   margin: 0;
@@ -3657,6 +3662,50 @@ body {
     border-top-right-radius: 0.2em;
     border-bottom-right-radius: 0.2em; }
 
+.assignments {
+  margin-top: 1.5em; }
+
+.assignments__title {
+  font-weight: bold; }
+
+.assignments__top-bar--right button {
+  float: right;
+  margin-left: 0.3em; }
+
+.assignment {
+  background-color: #e6e6e6;
+  border-radius: 0.2em; }
+
+.assignment__titles {
+  padding: 1em;
+  width: 40%; }
+  .assignment__titles .assignment__title {
+    font-weight: bold; }
+
+.assignment__detail {
+  width: 40%;
+  padding: 1em;
+  text-align: right; }
+  .assignment__detail ul {
+    list-style-type: none;
+    margin: 0; }
+    .assignment__detail ul li {
+      font-size: 0.9em; }
+  .assignment__detail h4 {
+    margin: 0; }
+  .assignment__detail .assignment__set {
+    font-weight: bold;
+    color: #2ECC40; }
+  .assignment__detail .assignment__due {
+    font-weight: bold;
+    color: #FF4136; }
+
+.assignment__expand-button {
+  float: left;
+  width: 15%;
+  text-align: center;
+  border-left: 1px solid #8a8a8a;
+  height: 100%; }
+
 .transcript .highlight {
-    background-color: red;
-  }
+  background-color: red; }

@@ -38,5 +38,12 @@
 @include foundation-visibility-classes;
 @include foundation-float-classes;
  
+@import 'shared';
 @import 'teacher-view';
 @import 'teacher-view__controls';
+@import 'assignments';
+
+
+.transcript .highlight {
+    background-color: red;
+  }
