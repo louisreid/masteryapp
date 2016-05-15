@@ -30,3 +30,7 @@ bower_components
 # Private configuration
 manifest.yml
 *.private.json
+
+#Misc
+codekit.config
+.codekit-cache
