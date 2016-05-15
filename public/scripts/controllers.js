@@ -38,6 +38,12 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
     };
     $scope.addNote = function() {
       var note = {"timestamp": $scope.timestamp, "note": $scope.noteText};
+      var comments = JSON.parse(localStorage.previousComments || "[]");
+      console.log(comments);
+      comments = comments.filter(function (x) { return x != $scope.noteText; });
+      comments.splice(0, 0, $scope.noteText);
+      $scope.previousComments = comments;
+      localStorage.previousComments = JSON.stringify(comments);
       $http.put('video/' + $scope.video + "/note", JSON.stringify(note), {headers: {"Content-Type": "application/json"}}).success(function(data) {
         $scope.notes.push(note);
       });
@@ -46,6 +52,12 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
     $scope.addSticker = function(sticker) {
       var note = {"timestamp": $scope.timestamp, "sticker": sticker};
       if ($scope.noteText) {
+        var comments = JSON.parse(localStorage.previousComments || "[]");
+        console.log(comments);
+        comments = comments.filter(function (x) { return x != $scope.noteText; });
+        comments.splice(0, 0, $scope.noteText);
+        $scope.previousComments = comments;
+        localStorage.previousComments = JSON.stringify(comments);
         note.note = $scope.noteText;
       }
       $http.put('video/' + $scope.video + "/note", JSON.stringify(note), {headers: {"Content-Type": "application/json"}}).success(function(data) {
@@ -75,6 +87,7 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
         $scope.returned = false;
       });
     };
+    $scope.previousComments = JSON.parse(localStorage.previousComments || "[]");
   }]);
 
 masteryControllers.controller('DashboardCtrl', ['$scope', '$location', '$routeParams', '$http',
