@@ -16,7 +16,8 @@
         </ul>
         <form action="" ng-submit="addNote()">
           <div class="comment">
-            <input type="text" placeholder="Write timed feedback" ng-model="noteText" bs-options="comment for comment in previousComments" bs-typeahead />
+            <!-- <input type="text" placeholder="Write timed feedback" ng-model="noteText" bs-options="comment for comment in previousComments" bs-typeahead /> -->
+            <input type="text" placeholder="Write timed feedback" ng-model="noteText" />
             <ul class="comment__buttons">
               <li><img src="img/comment-return.png" alt=""></li>
               <li class="comment__buttons__text">add comment at {{timestamp | timestamp}}</li>
