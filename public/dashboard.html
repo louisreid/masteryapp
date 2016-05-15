@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html class="no-js" lang="">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Mastery - Dashboars</title>
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles/main.css">
+  <style type="text/css">
+  video {
+    max-width: 100%;
+    height: auto;
+  }
+  </style>
+  <link href="bower_components/video.js/dist/video-js.css" rel="stylesheet">
+  <script src="bower_components/video.js/dist/ie8/videojs-ie8.min.js"></script>
+  <script src="bower_components/video.js/dist/video.min.js"></script>
+  <!--
+  <script src="bower_components/angular/angular.min.js"></script>
+  <script src="bower_components/angular-route/angular-route.min.js"></script>
+-->
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+  <script src="scripts/app.js"></script>
+  <script src="scripts/controllers.js"></script>
+  <script src="scripts/filters.js"></script>
+  <script src="https://use.fontawesome.com/e68bf84480.js"></script>
+</head>
+
+<body ng-app="masteryApp">
+  <div class="top-bar">
+    <div class="row">
+      <div class="top-bar-left">
+        <ul class="dropdown menu" data-dropdown-menu>
+          <li class="menu-text">Mastery</li>
+        </ul>
+      </div>
+      <div class="top-bar-right">
+        <ul class="menu">
+          <li><a href="#/dashboard">Dashboard</a></li>
+          <li><a href="#/assignments">Assignments</a></li>
+          <li><a href="#/class">Class</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="small-10 small-offset-1 assignments">
+      <div class="row">
+        <div class="small-4 column">
+          <h4 class="assignments__title">Assignments</h4>
+        </div>
+        <div class="small-8 column assignments__top-bar--right">
+          <button class="button secondary"> Archive </button>
+          <button class="button secondary">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+      <div class="assignment">
+          <div class="assignment__titles">
+            <h4 class="assignment__title">Simultaneous Equations</h4>
+            <h4 class="assignment__class">Year 9 - 9X/MA1</h4>
+          </div>
+          <div class="assignment__detail">
+            <h4>Handed In</h4>
+            <ul>
+              <li>
+                set: <span class="assignment__set">Monday 11th April</span>
+              </li>
+              <li>
+                due: <span class="assignment__due">Monday 13th April</span>
+              </li>
+            </ul>
+          </div>
+        <div class="assignment__expand-button">
+          <button>
+            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="assignment">
+        <div class="assignment__contracted">
+          <div class="assignment__titles">
+            <h4 class="assignment__title">Simultaneous Equations</h4>
+            <h4 class="assignment__class">Year 9 - 9X/MA1</h4>
+          </div>
+          <div class="assignment__detail">
+            <h4>Handed In</h4>
+            <ul>
+              <li>
+                set: <span class="assignment__set">Monday 11th April</span>
+              </li>
+              <li>
+                due: <span class="assignment__due">Monday 13th April</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="assignment__expand-button">
+          <button>
+            <i class="fa fa-chevron-down" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</body>
+
+</html>
