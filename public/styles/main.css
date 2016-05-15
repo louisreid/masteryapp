@@ -3693,12 +3693,14 @@ body {
       font-size: 0.9em; }
   .assignment__detail h4 {
     margin: 0; }
-  .assignment__detail .assignment__set {
-    font-weight: bold;
-    color: #2ECC40; }
-  .assignment__detail .assignment__due {
-    font-weight: bold;
-    color: #FF4136; }
+
+.assignment__set {
+  font-weight: bold;
+  color: #2ECC40; }
+
+.assignment__due {
+  font-weight: bold;
+  color: #FF4136; }
 
 .assignment__expand-button {
   float: left;
@@ -3719,6 +3721,13 @@ body {
 
 .video-thumbnail--current .video-thumbnail__play {
   display: none; }
+
+.marking-playlist__title h4 {
+  font-weight: bold; }
+
+.marking-playlist__dates ul {
+  list-style-type: none;
+  margin: 0; }
 
 .transcript .highlight {
   background-color: red; }

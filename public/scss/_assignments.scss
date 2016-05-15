@@ -42,14 +42,14 @@
 	h4 {
 		margin: 0;
 	}
-	.assignment__set {
-		font-weight: $global-weight-bold;
-		color: $green;
-	}
-	.assignment__due {
-		font-weight: $global-weight-bold;
-		color: $red;
-	}
+}
+.assignment__set {
+	font-weight: $global-weight-bold;
+	color: $green;
+}
+.assignment__due {
+	font-weight: $global-weight-bold;
+	color: $red;
 }
 
 .assignment__expand-button {
