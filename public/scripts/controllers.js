@@ -11,6 +11,7 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
       $scope.passed = data.passed;
       $scope.returned = data.returned;
       $scope.notes = data.notes;
+      $scope.transcript = data.transcript || [];
       $http.get('assignment/' + data.assignment).success(function(data) {
         console.log(data);
         $scope.assignment = data;
@@ -24,8 +25,16 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
     $scope.skipTo = function() {
       $scope.timestamp = this.note.timestamp;
     };
+    $scope.skipToChunk = function() {
+      $scope.timestamp = this.chunk.timestamp;
+    };
     $scope.switchTo = function() {
       $route.updateParams({video: this.video.id});
+    };
+    $scope.timestampInChunk = function() {
+      var nextChunkTimestamp = ($scope.transcript.length > this.$index + 1) ? $scope.transcript[this.$index + 1].timestamp : 1.0/0.0;
+      var endChunkTimestamp = Math.min(this.chunk.timestamp + 1, nextChunkTimestamp);
+      return (($scope.timestamp >= this.chunk.timestamp) && ($scope.timestamp < endChunkTimestamp));
     };
     $scope.addNote = function() {
       var note = {"timestamp": $scope.timestamp, "note": $scope.noteText};

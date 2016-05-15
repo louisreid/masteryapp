@@ -58,6 +58,9 @@
           <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" ng-attr-poster="{{video | thumbUrl}}" data-setup="{}" time-update ng-model="timestamp">
             <source ng-src="{{video | videoUrl}}" /><!-- TODO: Specify type -->
           </video>
+          <div class="transcript">
+            <span ng-repeat="chunk in transcript" ng-click="skipToChunk()" ng-class="{highlight: timestampInChunk()}"> {{chunk.content}} </span>
+          </div>
           <ul class="current-video__comments">
             <li ng-repeat="note in notes | orderBy:'timestamp'">
               <span class="time" ng-click="skipTo()">{{note.timestamp | timestamp }}</span>

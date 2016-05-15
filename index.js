@@ -11,6 +11,7 @@ var path = require("path");
 var faststart = require('faststart');
 var videoThumb = require('video-thumb');
 var session = require('client-sessions');
+var havenondemand = require('havenondemand');
 var config = require('./config.json');
 
 var app = express();
@@ -37,6 +38,8 @@ s3.listObjects({}, function(err, data) {
 var dynamoAssignments = new aws.DynamoDB({params: {TableName: 'mastery-assignments'}});
 var dynamoUsers = new aws.DynamoDB({params: {TableName: 'mastery-users'}});
 var dynamoVideos = new aws.DynamoDB({params: {TableName: 'mastery-videos'}});
+
+var hodClient = new havenondemand.HODClient(process.env.HOD_API_KEY);
 
 app.get('/user/:user', function(req, res) {
   var user = req.params.user;
@@ -140,6 +143,9 @@ app.get('/video/:video/data', function(req, res) {
                  "passed": (data.Item.passed) ? Boolean(data.Item.passed.BOOL) : false,
                  "returned": (data.Item.returned) ? Boolean(data.Item.returned.BOOL) : false,
                  "notes": (data.Item.notes) ? data.Item.notes.SS.map(function(x) {return JSON.parse(x);}) : []};
+      if (data.Item.transcript) {
+        obj.transcript = JSON.parse(data.Item.transcript.S);
+      }
       res.json(obj);
     }
   });
@@ -351,9 +357,31 @@ app.post('/video', multer({dest: tmp.dirSync().name}).single('file'), function(r
                 function (err, data) {
                   console.log("dynamoVideos.putItem", err, data);
                 });
-              res.end();
-              cleanup2();
-              cleanup1();
+
+              hodClient.call('recognizespeech', {file: path2, interval: 1000}, true, function(err, resp, body) {
+                jobID = resp.body.jobID
+                console.log("recognizespeech returned job", jobID)
+                res.end();
+                cleanup2();
+                cleanup1();
+
+                hodClient.getJobResult(jobID, function(err, resp, body) {
+                  if (err) {
+                    console.log("recognizespeech failed asynchronously", err);
+                  } else {
+                    var doc = resp.body.actions[0].result.document.map(function(e) {
+                      return {"content": e.content, "timestamp": e.offset / 1000};
+                    );
+                    console.log("recognizespeech transcribed to", doc);
+                    dynamoVideos.updateItem({"Key": {"id": {"S": video}},
+                                             "UpdateExpression": "SET transcript = :transcript",
+                                             "ExpressionAttributeValues": {":transcript": {"S": JSON.stringify(doc)}}},
+                      function (err, data) {
+                        console.log("dynamoVideos.updateItem", err, data);
+                      });
+                  }
+                });
+              });
             });
           });
         });

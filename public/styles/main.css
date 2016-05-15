@@ -3656,3 +3656,7 @@ body {
     border-right: none;
     border-top-right-radius: 0.2em;
     border-bottom-right-radius: 0.2em; }
+
+.transcript .highlight {
+    background-color: red;
+  }
