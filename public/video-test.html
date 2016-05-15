@@ -17,14 +17,24 @@
   </style>
   <link href="http://vjs.zencdn.net/c/video-js.css" rel="stylesheet">
   <script src="http://vjs.zencdn.net/c/video.js"></script>
+  <script src="https://use.fontawesome.com/e68bf84480.js"></script>
+  <link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body>
+  <div ng-repeat="video in assignment.videos | sortVideos" class="column video-thumbnail">
+    <img src="http://demo.mastery.cc/video/6a5fcc6d-cdcc-41cc-96a3-0b0db2183330/thumb.png" ng-src="{{video.id | thumbUrl}}" ng-click="switchTo()" />
+    <div class="video-thumbnail__play">
+      <i class="fa fa-play-circle" aria-hidden="true"></i>
+    </div>
+  </div>
+  <!-- 
   <div class="container">
     <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" poster="img/video-1_placeholder.png" data-setup="{}">
       <source src="video/video-1.mp4" type='video/mp4' />
     </video>
   </div>
+ -->
   <script>
   // Once the video is ready
   _V_("example_video_1").ready(function() {

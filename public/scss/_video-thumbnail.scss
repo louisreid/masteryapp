@@ -1,0 +1,19 @@
+.video-thumbnail {
+	margin-bottom: 1em;
+	.video-thumbnail__play {
+		position: absolute;
+    top: 32%;
+    left: 40%;
+    i {
+	    color: $light-gray;
+	    font-size: 3.3em;
+    }
+	}
+}
+
+.video-thumbnail--current {
+	.video-thumbnail__play {
+		display: none;
+	}
+}
+

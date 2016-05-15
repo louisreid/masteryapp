@@ -3707,5 +3707,18 @@ body {
   border-left: 1px solid #8a8a8a;
   height: 100%; }
 
+.video-thumbnail {
+  margin-bottom: 1em; }
+  .video-thumbnail .video-thumbnail__play {
+    position: absolute;
+    top: 32%;
+    left: 40%; }
+    .video-thumbnail .video-thumbnail__play i {
+      color: #e6e6e6;
+      font-size: 3.3em; }
+
+.video-thumbnail--current .video-thumbnail__play {
+  display: none; }
+
 .transcript .highlight {
   background-color: red; }
