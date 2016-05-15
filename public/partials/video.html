@@ -8,42 +8,42 @@
           <li class="user-embed__username">({{user.id}})</li>
           <li class="user-embed__score">| {{user.score}}</li>
         </ul>
-        <form action="">
+        <form action="" ng-submit="addNote()">
           <div class="comment">
-            <input type="text" placeholder="Write timed feedback" />
+            <input type="text" placeholder="Write timed feedback" ng-model="noteText" />
             <ul class="comment__buttons">
               <li><img src="img/comment-return.png" alt=""></li>
-              <li class="comment__buttons__text">add comment at 00:30</li>
+              <li class="comment__buttons__text">add comment at {{timestamp | timestamp}}</li>
               <li><img src="img/comment-voice.png" alt=""></li>
               <li><img src="img/comment-emoticon.png" alt=""></li>
             </ul>
           </div>
           <ul class="feedback__stickers">
             <li class="feedback__stickers__title">Add timed feedback:</li>
-            <li><img src="img/sticker-1.png" alt=""></li>
-            <li><img src="img/sticker-2.png" alt=""></li>
-            <li><img src="img/sticker-3.png" alt=""></li>
-            <li><img src="img/sticker-4.png" alt=""></li>
-            <li><img src="img/sticker-5.png" alt=""></li>
-            <li><img src="img/sticker-6.png" alt=""></li>
-            <li><img src="img/sticker-7.png" alt=""></li>
-            <li><img src="img/sticker-8.png" alt=""></li>
-            <li><img src="img/sticker-9.png" alt=""></li>
-            <li><img src="img/sticker-10.png" alt=""></li>
-            <li><img src="img/sticker-11.png" alt=""></li>
-            <li><img src="img/sticker-12.png" alt=""></li>
+            <li><img src="img/sticker-1.png" alt="" ng-click="addSticker('sticker-1')"></li>
+            <li><img src="img/sticker-2.png" alt="" ng-click="addSticker('sticker-2')"></li>
+            <li><img src="img/sticker-3.png" alt="" ng-click="addSticker('sticker-3')"></li>
+            <li><img src="img/sticker-4.png" alt="" ng-click="addSticker('sticker-4')"></li>
+            <li><img src="img/sticker-5.png" alt="" ng-click="addSticker('sticker-5')"></li>
+            <li><img src="img/sticker-6.png" alt="" ng-click="addSticker('sticker-6')"></li>
+            <li><img src="img/sticker-7.png" alt="" ng-click="addSticker('sticker-7')"></li>
+            <li><img src="img/sticker-8.png" alt="" ng-click="addSticker('sticker-8')"></li>
+            <li><img src="img/sticker-9.png" alt="" ng-click="addSticker('sticker-9')"></li>
+            <li><img src="img/sticker-10.png" alt="" ng-click="addSticker('sticker-10')"></li>
+            <li><img src="img/sticker-11.png" alt="" ng-click="addSticker('sticker-11')"></li>
+            <li><img src="img/sticker-12.png" alt="" ng-click="addSticker('sticker-12')"></li>
           </ul>
           <ul class="row main-buttons">
-            <li class="column small-3 main-buttons__promote">
+            <li class="column small-3 main-buttons__promote" ng-click="promoteVideo()">
               <img src="img/main-buttons__check.png" alt=""> Promote
             </li>
-            <li class="column small-3 main-buttons__pass">
+            <li class="column small-3 main-buttons__pass" ng-click="passVideo()">
               <img src="img/main-buttons__cross.png" alt=""> Pass
             </li>
-            <li class="column small-3 main-buttons__fail">
+            <li class="column small-3 main-buttons__fail" ng-click="failVideo()">
               <img src="img/main-buttons__promote.png" alt=""> Fail
             </li>
-            <li class="column small-3 main-buttons__return">
+            <li class="column small-3 main-buttons__return" ng-click="returnVideo()">
               <img src="img/main-buttons__return.png" alt=""> Return
             </li>
           </ul>
@@ -55,12 +55,12 @@
     <div class="row">
       <div class="small-8 small-offset-2">
         <div class="current-video">
-          <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" ng-attr-poster="{{video | thumbUrl}}" data-setup="{}">
+          <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" ng-attr-poster="{{video | thumbUrl}}" data-setup="{}" time-update ng-model="timestamp">
             <source ng-src="{{video | videoUrl}}" /><!-- TODO: Specify type -->
           </video>
           <ul class="current-video__comments">
-            <li ng-repeat="note in notes">
-              <span class="time">{{note.timestamp | timestamp }}</span>
+            <li ng-repeat="note in notes | orderBy:'timestamp'">
+              <span class="time" ng-click="skipTo()">{{note.timestamp | timestamp }}</span>
               <img ng-show="note.sticker != ''" ng-src="img/{{note.sticker}}.png" alt="">
               <span>{{note.note}}</span>
             </li>
@@ -71,9 +71,9 @@
 
     <div class="marking-playlist">
       <div class="row">
+        Other unmarked videos for {{assignment.summary}}
         <div class="small-10 small-offset-1">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Enim quo, delectus nostrum vitae reiciendis dolore impedit sapiente, eius alias molestias fugiat quisquam totam consequuntur nobis eveniet odio velit ullam reprehenderit.
-
+          <img ng-repeat="video in assignment.videos | otherUnmarkedVideos: video" ng-src="{{video.id | thumbUrl}}" ng-click="switchTo()" />
         </div>
       </div>
     </div>

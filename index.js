@@ -45,10 +45,24 @@ app.get('/user/:user', function(req, res) {
     if (err) {
       res.end(err);
     } else {
+      var videos = data.Item.videos ? data.Item.videos.SS : [];
+      var promotedVideos = data.Item.promotedVideos ? data.Item.promotedVideos.SS : [];
+      var passedVideos = data.Item.passedVideos ? data.Item.passedVideos.SS : [];
+      var markedVideos = data.Item.markedVideos ? data.Item.markedVideos.SS : [];
+      var returnedVideos = data.Item.returnedVideos ? data.Item.returnedVideos.SS : [];
+
+      var aggregatedVideos = videos.map(function(e) {
+        return {"id": e,
+                "promoted": (promotedVideos.indexOf(e) != -1),
+                "passed": (passedVideos.indexOf(e) != -1),
+                "marked": (markedVideos.indexOf(e) != -1),
+                "returned": (returnedVideos.indexOf(e) != -1)};
+      });
+
       var obj = {"id": user,
                  "name": (data.Item.displayName) ? data.Item.displayName.S : "",
                  "score": (data.Item.score) ? Number(data.Item.score.N) : 0,
-                 "videos": (data.Item.videos) ? data.Item.videos.SS : []};
+                 "videos": aggregatedVideos};
       res.json(obj);
     }
   });
@@ -75,12 +89,24 @@ app.get('/assignment/:assignment', function(req, res) {
     if (err) {
       res.end(err);
     } else {
+      var videos = data.Item.videos ? data.Item.videos.SS : [];
+      var promotedVideos = data.Item.promotedVideos ? data.Item.promotedVideos.SS : [];
+      var markedVideos = data.Item.markedVideos ? data.Item.markedVideos.SS : [];
+      var passedVideos = data.Item.passedVideos ? data.Item.passedVideos.SS : [];
+      var returnedVideos = data.Item.returnedVideos ? data.Item.returnedVideos.SS : [];
+
+      var aggregatedVideos = videos.map(function(e) {
+        return {"id": e,
+                "promoted": (promotedVideos.indexOf(e) != -1),
+                "marked": (markedVideos.indexOf(e) != -1),
+                "passed": (passedVideos.indexOf(e) != -1),
+                "returned": (returnedVideos.indexOf(e) != -1)};
+      });
+
       var obj = {"id": assignment,
                  "summary": (data.Item.summary) ? data.Item.summary.S : "",
                  "detail": (data.Item.detail) ? data.Item.detail.S : "",
-                 "videos": (data.Item.videos) ? data.Item.videos.SS : [],
-                 "passedVideos": (data.Item.passedVideos) ? data.Item.passedVideos.SS : [],
-                 "failedVideos": (data.Item.failedVideos) ? data.Item.failedVideos.SS : []};
+                 "videos": aggregatedVideos};
       res.json(obj);
     }
   });
@@ -109,8 +135,90 @@ app.get('/video/:video/data', function(req, res) {
     } else {
       var obj = {"assignment": (data.Item.assignment) ? data.Item.assignment.S : "",
                  "user": (data.Item.user) ? data.Item.user.S : "",
+                 "promoted": (data.Item.promoted) ? Boolean(data.Item.promoted.BOOL) : false,
+                 "marked": (data.Item.marked) ? Boolean(data.Item.marked.BOOL) : false,
+                 "passed": (data.Item.passed) ? Boolean(data.Item.passed.BOOL) : false,
+                 "returned": (data.Item.returned) ? Boolean(data.Item.returned.BOOL) : false,
                  "notes": (data.Item.notes) ? data.Item.notes.SS.map(function(x) {return JSON.parse(x);}) : []};
       res.json(obj);
+    }
+  });
+});
+
+app.post('/video/:video', function(req, res) {
+  var video = req.params.video;
+  dynamoVideos.getItem({"Key": {"id": {"S": video}}}, function (err, data) {
+    console.log("dynamoVideos.getItem", err, data);
+    if (err) {
+      res.end(err);
+    } else {
+      var assignment = (data.Item.assignment) ? data.Item.assignment.S : null;
+      var user = (data.Item.user) ? data.Item.user.S : null;
+      var addList = [];
+      var deleteList = [];
+      var setList = [];
+      var setValues = {};
+      if (req.body.hasOwnProperty("promoted")) {
+        if (req.body.promoted) {
+	  addList.push("promotedVideos :video");
+        } else {
+	  deleteList.push("promotedVideos :video");
+        }
+        setList.push("promoted = :promoted");
+        setValues[":promoted"] = {"BOOL": !!req.body.promoted};
+      }
+      if (req.body.hasOwnProperty("marked")) {
+        if (req.body.marked) {
+	  addList.push("markedVideos :video");
+        } else {
+	  deleteList.push("markedVideos :video");
+        }
+        setList.push("marked = :marked");
+        setValues[":marked"] = {"BOOL": !!req.body.marked};
+      }
+      if (req.body.hasOwnProperty("passed")) {
+        if (req.body.passed) {
+	  addList.push("passedVideos :video");
+        } else {
+	  deleteList.push("passedVideos :video");
+        }
+        setList.push("passed = :passed");
+        setValues[":passed"] = {"BOOL": !!req.body.passed};
+      }
+      if (req.body.hasOwnProperty("returned")) {
+        if (req.body.returned) {
+	  addList.push("returnedVideos :video");
+        } else {
+	  deleteList.push("returnedVideos :video");
+        }
+        setList.push("returned = :returned");
+        setValues[":returned"] = {"BOOL": !!req.body.returned};
+      }
+      var addExpression = (addList.length > 0) ? ("ADD " + addList.join(", ")) : "";
+      var deleteExpression = (deleteList.length > 0) ? ("ADD " + deleteList.join(", ")) : "";
+      var addDeleteExpression = addExpression + (((addExpression != "") && (deleteExpression != "")) ? " " : "") + deleteExpression;
+      console.log(addDeleteExpression);
+      dynamoAssignments.updateItem({"Key": {"id": {"S": assignment}},
+                                    "UpdateExpression": addDeleteExpression,
+                                    "ExpressionAttributeValues": {":video": {"SS": [video]}}},
+        function (err, data) {
+          console.log("dynamoAssignments.updateItem", err, data);
+        });
+      dynamoUsers.updateItem({"Key": {"id": {"S": user}},
+                              "UpdateExpression": addDeleteExpression,
+                              "ExpressionAttributeValues": {":video": {"SS": [video]}}},
+        function (err, data) {
+          console.log("dynamoUsers.updateItem", err, data);
+        });
+      console.log(setList, setValues);
+console.log("SET " + setList.join(", "));
+      dynamoVideos.updateItem({"Key": {"id": {"S": video}},
+                               "UpdateExpression": "SET " + setList.join(", "),
+                               "ExpressionAttributeValues": setValues},
+        function (err, data) {
+          console.log("dynamoVideos.updateItem", err, data);
+        });
+      res.end();
     }
   });
 });
@@ -129,7 +237,6 @@ app.put('/video/:video/note', function(req, res) {
 
 app.get('/video/:video/thumb.png', function(req, res) {
   var video = req.params.video;
-  console.log("Thumbnail!");
   s3.headObject({Key: video + "-thumb"}, function(err, data) {
     console.log("headObject:", err, data);
     if (err) {

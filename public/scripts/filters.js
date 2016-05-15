@@ -15,4 +15,16 @@ filter('videoUrl', function() {
   return function(id) {
     return "video/" + id;
   }
+}).
+filter('otherUnmarkedVideos', function() {
+  return function(items, video) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+      if ((item.id != video) &&
+          (!item.marked)) {
+        filtered.push(item);
+      }
+    });
+    return filtered;
+  };
 });
