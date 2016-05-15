@@ -3564,7 +3564,7 @@ table.hover tr:nth-of-type(even):hover {
 
 body {
   margin: 0;
-  padding: 50px 0 230px 0;
+  padding: 50px 0 0 0;
   overflow: hidden; }
 
 .top-bar {
@@ -3721,8 +3721,10 @@ body {
     .video-thumbnail .video-thumbnail__play i {
       color: #e6e6e6;
       font-size: 3.3em; }
-  .video-thumbnail:hover .video-thumbnail__play {
-    opacity: 0.8; }
+  .video-thumbnail:hover {
+    cursor: pointer; }
+    .video-thumbnail:hover .video-thumbnail__play {
+      opacity: 0.8; }
 
 .video-thumbnail--current .video-thumbnail__play {
   display: none; }
