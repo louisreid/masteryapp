@@ -3681,7 +3681,7 @@ body {
 .assignments {
   list-style-type: none;
   margin: 0;
-  margin-top: 1.5em; }
+  margin-top: 0.2em; }
 
 .assignments__title {
   font-weight: bold; }
@@ -3693,6 +3693,9 @@ body {
 .assignment {
   background-color: #e6e6e6;
   border-radius: 0.2em; }
+  .assignment:hover {
+    cursor: pointer;
+    opacity: 0.8; }
 
 .assignment__titles {
   float: left;

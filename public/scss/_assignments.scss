@@ -1,7 +1,7 @@
 .assignments {
 	list-style-type: none;
 	margin: 0;
-	margin-top: 1.5em;
+	margin-top: 0.2em;
 }
 
 .assignments__title {
@@ -21,6 +21,10 @@
 	border-radius: $global-radius;
 	@extend .dropshadow;
 	@extend .clearfix;
+	&:hover {
+		cursor: pointer;
+		opacity: 0.8;
+	}
 }
 
 .assignment__titles {

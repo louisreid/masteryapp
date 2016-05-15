@@ -20,11 +20,10 @@
           </div>
         </div>
         <ul class="assignments">
-          <li ng-repeat="assignment in assignments" class="assignment">
+          <li ng-repeat="assignment in assignments" ng-click="switchToAssignment()" class="assignment">
             <div class="assignment__titles">
               <h4 class="assignment__title">{{assignment.summary}}</h4>
-              <h4 class="assignment__class">Year 9 - 9X/MA1</h4>
-              <span ng-click="switchToAssignment()">Go ({{assignment.videos.length}} videos)</span>
+              <h4 class="assignment__class">Year 9 - 9X/MA1 ({{assignment.videos.length}} videos)</h4>
             </div>
             <div class="assignment__detail">
               <h4>Handed In</h4>
