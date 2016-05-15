@@ -1,15 +1,32 @@
 <div>
   <div class="main-wrapper">
     <div class="marking-playlist">
-      <h2>{{assignment.summary}}</h2>
-      <p>{{assignment.detail}}</p>
       <div class="row">
         <div class="small-10 small-offset-1">
-          <img ng-repeat="video in assignment.videos | sortVideos" ng-src="{{video.id | thumbUrl}}" ng-click="switchTo()" />
+        <div class="row">
+          <div class="small-6">
+            <h2>{{assignment.summary}}</h2>
+            <p>{{assignment.detail}}</p>
+          </div>
+          <div class="small-6 assignment__detail">
+            <ul>
+              <li>
+                set: <span class="assignment__set">Monday 11th April</span>
+              </li>
+              <li>
+                due: <span class="assignment__due">Monday 13th April</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+          <div class="row small-up-4">
+            <div ng-repeat="video in assignment.videos | sortVideos" class="column">
+              <img ng-src="{{video.id | thumbUrl}}" ng-click="switchTo()" />
+            </div>
+          </div>
         </div>
       </div>
     </div>
-
   </div>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="vendor/foundation.min.js"></script>
