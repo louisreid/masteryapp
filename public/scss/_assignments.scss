@@ -19,6 +19,7 @@
 .assignment, .upload {
 	background-color: $light-gray;
 	border-radius: $global-radius;
+	margin-bottom: 1em;
 	@extend .dropshadow;
 	@extend .clearfix;
 	&:hover {
