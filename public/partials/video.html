@@ -65,6 +65,7 @@
             <!-- TODO: Specify type -->
           </video>
           <div class="current-video__transcript">
+            <h6>Transcript</h6>
             <span ng-repeat="chunk in transcript" ng-click="skipToChunk()" ng-class="{highlight: timestampInChunk()}"> {{chunk.content}} </span>
           </div>
           <ul class="current-video__comments">

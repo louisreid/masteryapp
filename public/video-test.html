@@ -22,12 +22,71 @@
 </head>
 
 <body>
-  <div ng-repeat="video in assignment.videos | sortVideos" class="column video-thumbnail">
+  <div class="top-bar">
+    <div class="row">
+      <div class="top-bar-left">
+        <ul class="dropdown menu" data-dropdown-menu>
+          <li class="menu-text">Mastery</li>
+        </ul>
+      </div>
+      <div class="top-bar-right">
+        <ul class="menu">
+          <li><a href="#/dashboard">Dashboard</a></li>
+          <li><a href="#/assignments">Assignments</a></li>
+          <li><a href="#/class">Class</a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="main-wrapper ng-scope" ng-view="">
+    <div class="ng-scope">
+      <div class="main-wrapper">
+        <div class="marking-playlist">
+          <div class="row">
+            <div class="small-10 small-offset-1">
+              <ul class="user-embed">
+                <li><img src="img/user-profile.png" alt=""></li>
+                <li class="user-embed__name ng-binding">Daisy</li>
+                <li class="user-embed__username ng-binding">(daisytarbek93)</li>
+                <li class="user-embed__score ng-binding">| 9012</li>
+              </ul>
+              <ul class="assignments">
+                <!-- ngRepeat: assignment in assignments -->
+                <!-- end ngRepeat: assignment in assignments -->
+                <li ng-repeat="assignment in assignments" class="ng-scope assignment">
+                  <div class="assignment__titles">
+                    <h4 class="assignment__title">{{assignment.summary}}</h4>
+                    <h4 class="assignment__class">Year 9 - 9X/MA1</h4>
+                    <span ng-click="switchToAssignment()">Go ({{assignment.videos.length}} videos)</span>
+                  </div>
+                  <div class="assignment__detail">
+                    <h4>Handed In</h4>
+                    <ul>
+                      <li>
+                        set: <span class="assignment__set">{{assignment.setDate | date }}</span>
+                      </li>
+                      <li>
+                        due: <span class="assignment__due">{{assignment.dueDate | date }}</span>
+                      </li>
+                    </ul>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="bower_components/jquery/dist/jquery.min.js"></script>
+      <script src="vendor/foundation.min.js"></script>
+    </div>
+  </div>
+  <!--   <div ng-repeat="video in assignment.videos | sortVideos" class="column video-thumbnail">
     <img src="http://demo.mastery.cc/video/6a5fcc6d-cdcc-41cc-96a3-0b0db2183330/thumb.png" ng-src="{{video.id | thumbUrl}}" ng-click="switchTo()" />
     <div class="video-thumbnail__play">
       <i class="fa fa-play-circle" aria-hidden="true"></i>
     </div>
   </div>
+ -->
   <!-- 
   <div class="container">
     <video id="example_video_1" class="video-js vjs-default-skin" controls preload="none" poster="img/video-1_placeholder.png" data-setup="{}">

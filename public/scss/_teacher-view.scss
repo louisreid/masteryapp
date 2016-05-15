@@ -42,6 +42,9 @@ body {
   padding: 1em;
   margin: 0.8em 0;
   border-radius: $global-radius;
+  h6 {
+    font-weight: $global-weight-bold;
+  }
 }
 
 .marking-playlist {

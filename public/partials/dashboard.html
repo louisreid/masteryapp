@@ -1,21 +1,46 @@
 <div>
   <div class="main-wrapper">
-    <div class="marking-playlist">
-      <ul class="user-embed">
-        <li><img src="img/user-profile.png" alt=""></li>
-        <li class="user-embed__name">{{user.name}}</li>
-        <li class="user-embed__username">({{user.id}})</li>
-        <li class="user-embed__score">| {{user.score}}</li>
-      </ul>
-      <ul>
-        <li ng-repeat="assignment in assignments">
-          <h3>{{assignment.summary}}</h3>
-          <p>{{assignment.detail}}</p>
-          <span ng-click="switchToAssignment()" >Go ({{assignment.videos.length}} videos)</span>
-        </li>
-      </ul>
+    <div class="row">
+      <div class="small-10 small-offset-1">
+        <ul class="user-embed">
+          <li><img src="img/user-profile.png" alt=""></li>
+          <li class="user-embed__name">{{user.name}}</li>
+          <li class="user-embed__username">({{user.id}})</li>
+          <li class="user-embed__score">| {{user.score}}</li>
+        </ul>
+        <div class="row">
+          <div class="small-4 column">
+            <h4 class="assignments__title">Your assignments</h4>
+          </div>
+          <div class="small-8 column assignments__top-bar--right">
+            <button class="button secondary"> Archive </button>
+            <button class="button secondary">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+        <ul class="assignments">
+          <li ng-repeat="assignment in assignments" class="assignment">
+            <div class="assignment__titles">
+              <h4 class="assignment__title">{{assignment.summary}}</h4>
+              <h4 class="assignment__class">Year 9 - 9X/MA1</h4>
+              <span ng-click="switchToAssignment()">Go ({{assignment.videos.length}} videos)</span>
+            </div>
+            <div class="assignment__detail">
+              <h4>Handed In</h4>
+              <ul>
+                <li>
+                  set: <span class="assignment__set">{{assignment.setDate | date }}</span>
+                </li>
+                <li>
+                  due: <span class="assignment__due">{{assignment.dueDate | date }}</span>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
-
   </div>
   <script src="bower_components/jquery/dist/jquery.min.js"></script>
   <script src="vendor/foundation.min.js"></script>

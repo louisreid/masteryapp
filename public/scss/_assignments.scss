@@ -1,4 +1,6 @@
 .assignments {
+	list-style-type: none;
+	margin: 0;
 	margin-top: 1.5em;
 }
 
@@ -18,9 +20,11 @@
 	background-color: $light-gray;
 	border-radius: $global-radius;
 	@extend .dropshadow;
+	@extend .clearfix;
 }
 
 .assignment__titles {
+	float: left;
 	padding: 1em;
 	width: 40%;
 	.assignment__title {
@@ -29,6 +33,7 @@
 }
 
 .assignment__detail {
+	float: right;
 	width: 40%;
 	padding: 1em;
 	text-align: right;
@@ -51,15 +56,4 @@
 	font-weight: $global-weight-bold;
 	color: $red;
 }
-
-.assignment__expand-button {
-	float: left;
-	width: 15%;
-	text-align: center;
-	border-left: 1px solid $dark-gray;
-	height: 100%;
-}
-
-
-
 
