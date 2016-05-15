@@ -119,7 +119,7 @@ masteryControllers.directive("timeUpdate", function() {
     require: "ngModel",
     link: function(scope, el, attrs, ngModel) {
       el[0].ontimeupdate = function() {
-        ngModel.$setViewValue(Math.floor(el[0].currentTime));
+        ngModel.$setViewValue(Math.floor(el[0].currentTime) + 0.499); // Add a little on because the currentTime seems to lag a bit
       }
 
       ngModel.$render = function() {
