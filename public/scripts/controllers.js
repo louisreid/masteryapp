@@ -127,6 +127,31 @@ masteryControllers.controller('AssignmentCtrl', ['$scope', '$location', '$routeP
     };
   }]);
 
+masteryControllers.controller('UploadCtrl', ['$scope', '$routeParams', '$http',
+  function ($scope, $routeParams, $http) {
+    console.log($scope);
+    $scope.userId = $routeParams.user;
+    $scope.assignmentId = $routeParams.assignment;
+    document.getElementById('videoDropzoneForm').action = "/video?assignment=" + $scope.assignmentId + "&user=" + $scope.userId;
+    Dropzone._autoDiscoverFunction();
+    $http.get('assignment/' + $scope.assignmentId).success(function(assignmentData) {
+      $http.get('user/' + $scope.userId).success(function(userData) {
+        $scope.assignment = assignmentData;
+        $scope.user = userData;
+      });
+    });
+    var myDropzone = document.getElementsByClassName("dropzone")[0].dropzone;
+    myDropzone.on("complete", function(file) {
+      myDropzone.removeFile(file);
+      $http.get('assignment/' + $scope.assignmentId).success(function(assignmentData) {
+        $http.get('user/' + $scope.userId).success(function(userData) {
+          $scope.assignment = assignmentData;
+          $scope.user = userData;
+        });
+      });
+    });
+  }]);
+
 masteryControllers.directive("timeUpdate", function() {
   return {
     require: "ngModel",
@@ -141,5 +166,3 @@ masteryControllers.directive("timeUpdate", function() {
     }
   }
 });
-
-

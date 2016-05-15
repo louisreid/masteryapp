@@ -16,6 +16,19 @@ filter('videoUrl', function() {
     return "video/" + id;
   }
 }).
+filter('filterVideosToUser', function() {
+  return function(items, user) {
+    var filtered = [];
+    if (user != null) {
+      angular.forEach(items, function(item) {
+        if (user.videos.find(function(other) {return item.id == other.id;})) {
+          filtered.push(item);
+        }
+      });
+    }
+    return filtered;
+  };
+}).
 filter('otherUnmarkedVideos', function() {
   return function(items, video) {
     var filtered = [];

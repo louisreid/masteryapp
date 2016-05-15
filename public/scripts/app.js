@@ -21,9 +21,9 @@ config(['$routeProvider', function($routeProvider) {
     templateUrl: 'partials/assignment.html',
     controller: 'AssignmentCtrl'
   }).
-  when('/class', {
-    templateUrl: 'partials/class.html',
-    controller: 'ClassCtrl'
+  when('/upload/:user/:assignment', {
+    templateUrl: 'partials/upload.html',
+    controller: 'UploadCtrl'
   }).
   otherwise({redirectTo: '/dashboard/daisytarbek93'});
 }]);
