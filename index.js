@@ -47,6 +47,8 @@ app.get('/user/:user', function(req, res) {
     console.log("dynamoUsers.getItem", err, data);
     if (err) {
       res.end(err.code);
+    } else if (!data.Item) {
+      res.end();
     } else {
       var videos = data.Item.videos ? data.Item.videos.SS : [];
       var promotedVideos = data.Item.promotedVideos ? data.Item.promotedVideos.SS : [];
@@ -92,6 +94,8 @@ app.get('/assignment/:assignment', function(req, res) {
     console.log("dynamoAssignments.getItem", err, data);
     if (err) {
       res.end(err.code);
+    } else if (!data.Item) {
+      res.end();
     } else {
       var videos = data.Item.videos ? data.Item.videos.SS : [];
       var promotedVideos = data.Item.promotedVideos ? data.Item.promotedVideos.SS : [];
@@ -151,6 +155,8 @@ app.get('/video/:video/data', function(req, res) {
     console.log("dynamoVideos.getItem", err, data);
     if (err) {
       res.end(err.code);
+    } else if (!data.Item) {
+      res.end();
     } else {
       var obj = {"assignment": (data.Item.assignment) ? data.Item.assignment.S : "",
                  "user": (data.Item.user) ? data.Item.user.S : "",
@@ -173,6 +179,8 @@ app.post('/video/:video', function(req, res) {
     console.log("dynamoVideos.getItem", err, data);
     if (err) {
       res.end(err.code);
+    } else if (!data.Item) {
+      res.end();
     } else {
       var assignment = (data.Item.assignment) ? data.Item.assignment.S : null;
       var user = (data.Item.user) ? data.Item.user.S : null;
