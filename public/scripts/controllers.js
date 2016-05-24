@@ -90,7 +90,7 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
 
 masteryControllers.controller('DashboardCtrl', ['$scope', '$location', '$routeParams', '$http',
   function ($scope, $location, $routeParams, $http) {
-    $scope.userId = $routeParams.user;
+    $scope.userId = $routeParams.user || "";
     $http.get('user/' + $scope.userId).success(function(userData) {
       console.log(userData);
       async.map(userData.assignments || [], function(assignmentId, callback) {
@@ -100,6 +100,7 @@ masteryControllers.controller('DashboardCtrl', ['$scope', '$location', '$routePa
         });
       }, function (err, data) {
         $scope.user = userData;
+        $scope.userId = $scope.userId || userData.id;
         $scope.assignments = data;
       });
     });

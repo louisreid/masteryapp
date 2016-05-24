@@ -13,7 +13,7 @@ config(['$routeProvider', function($routeProvider) {
     templateUrl: 'partials/video.html',
     controller: 'VideoCtrl'
   }).
-  when('/dashboard/:user', {
+  when('/dashboard/:user?', {
     templateUrl: 'partials/dashboard.html',
     controller: 'DashboardCtrl'
   }).
@@ -25,5 +25,5 @@ config(['$routeProvider', function($routeProvider) {
     templateUrl: 'partials/upload.html',
     controller: 'UploadCtrl'
   }).
-  otherwise({redirectTo: '/dashboard/daisytarbek93'});
+  otherwise({redirectTo: '/dashboard/'});
 }]);
