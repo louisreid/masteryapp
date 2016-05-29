@@ -510,7 +510,11 @@ app.post('/video', multer({dest: tmp.dirSync().name}).single('file'), function(r
   }
 });
 
-app.use('/', express.static(__dirname + '/public'));
+app.get('/', function(req, res) {
+  res.redirect("/login.html");
+});
+
+app.use('/', express.static(__dirname + '/public', {index: false}));
 app.use('/bower_components', express.static(__dirname + '/bower_components'));
 
 var port = process.env.PORT || 80;

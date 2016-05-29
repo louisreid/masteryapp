@@ -1,7 +1,7 @@
 var masteryControllers = angular.module('masteryControllers', []);
 
-masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', '$http',
-  function ($scope, $route, $routeParams, $http) {
+masteryControllers.controller('VideoCtrl', ['$scope', '$window', '$route', '$routeParams', '$http',
+  function ($scope, $window, $route, $routeParams, $http) {
     $scope.video = $routeParams.video;
     $scope.timestamp = 0;
     $http.get('video/' + $routeParams.video + '/data').success(function(data) {
@@ -15,11 +15,23 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
       $http.get('assignment/' + data.assignment).success(function(data) {
         console.log(data);
         $scope.assignment = data;
+      }).error(function(statusText, statusCode) {
+        if (statusCode == 403) {
+          $window.location.href = "/login.html";
+        }
       });
       $http.get('user/' + data.user).success(function(data) {
         console.log(data);
         $scope.user = data;
+      }).error(function(statusText, statusCode) {
+        if (statusCode == 403) {
+          $window.location.href = "/login.html";
+        }
       });
+    }).error(function(statusText, statusCode) {
+      if (statusCode == 403) {
+        $window.location.href = "/login.html";
+      }
     });
 
     $scope.skipTo = function() {
@@ -88,8 +100,8 @@ masteryControllers.controller('VideoCtrl', ['$scope', '$route', '$routeParams', 
     $scope.previousComments = JSON.parse(localStorage.previousComments || "[]");
   }]);
 
-masteryControllers.controller('DashboardCtrl', ['$scope', '$location', '$routeParams', '$http',
-  function ($scope, $location, $routeParams, $http) {
+masteryControllers.controller('DashboardCtrl', ['$scope', '$location', '$window', '$routeParams', '$http',
+  function ($scope, $location, $window, $routeParams, $http) {
     $scope.userId = $routeParams.user || "";
     $http.get('user/' + $scope.userId).success(function(userData) {
       console.log(userData);
@@ -97,28 +109,44 @@ masteryControllers.controller('DashboardCtrl', ['$scope', '$location', '$routePa
         $http.get('assignment/' + assignmentId).success(function(data) {
           console.log(data);
           callback(null, data);
+        }).error(function(statusText, statusCode) {
+          if (statusCode == 403) {
+            $window.location.href = "/login.html";
+          }
         });
       }, function (err, data) {
         $scope.user = userData;
         $scope.userId = $scope.userId || userData.id;
         $scope.assignments = data;
       });
+    }).error(function(statusText, statusCode) {
+      if (statusCode == 403) {
+        $window.location.href = "/login.html";
+      }
     });
 
     $scope.switchToAssignment = function() {
-      $location.path("/assignment/" + this.assignment.id);
+      if ($scope.user.role != "student") {
+        $location.path("/assignment/" + this.assignment.id);
+      } else {
+        $location.path("/upload/" + $scope.userId + "/" + this.assignment.id);
+      }
     };
     $scope.switchToVideo = function() {
       $location.path("/video/" + this.video.id);
     };
   }]);
 
-masteryControllers.controller('AssignmentCtrl', ['$scope', '$location', '$routeParams', '$http',
-  function ($scope, $location, $routeParams, $http) {
+masteryControllers.controller('AssignmentCtrl', ['$scope', '$location', '$window', '$routeParams', '$http',
+  function ($scope, $location, $window, $routeParams, $http) {
     $scope.assignmentId = $routeParams.assignment;
     $http.get('assignment/' + $scope.assignmentId).success(function(data) {
       console.log(data);
       $scope.assignment = data;
+    }).error(function(statusText, statusCode) {
+      if (statusCode == 403) {
+        $window.location.href = "/login.html";
+      }
     });
 
     $scope.switchTo = function() {
@@ -126,8 +154,8 @@ masteryControllers.controller('AssignmentCtrl', ['$scope', '$location', '$routeP
     };
   }]);
 
-masteryControllers.controller('UploadCtrl', ['$scope', '$routeParams', '$http',
-  function ($scope, $routeParams, $http) {
+masteryControllers.controller('UploadCtrl', ['$scope', '$window', '$routeParams', '$http',
+  function ($scope, $window, $routeParams, $http) {
     console.log($scope);
     $scope.userId = $routeParams.user;
     $scope.assignmentId = $routeParams.assignment;
@@ -137,7 +165,15 @@ masteryControllers.controller('UploadCtrl', ['$scope', '$routeParams', '$http',
       $http.get('user/' + $scope.userId).success(function(userData) {
         $scope.assignment = assignmentData;
         $scope.user = userData;
+      }).error(function(statusText, statusCode) {
+        if (statusCode == 403) {
+          $window.location.href = "/login.html";
+        }
       });
+    }).error(function(statusText, statusCode) {
+      if (statusCode == 403) {
+        $window.location.href = "/login.html";
+      }
     });
     var myDropzone = document.getElementsByClassName("dropzone")[0].dropzone;
     myDropzone.on("complete", function(file) {
@@ -146,7 +182,15 @@ masteryControllers.controller('UploadCtrl', ['$scope', '$routeParams', '$http',
         $http.get('user/' + $scope.userId).success(function(userData) {
           $scope.assignment = assignmentData;
           $scope.user = userData;
+        }).error(function(statusText, statusCode) {
+          if (statusCode == 403) {
+            $window.location.href = "/login.html";
+          }
         });
+      }).error(function(statusText, statusCode) {
+        if (statusCode == 403) {
+          $window.location.href = "/login.html";
+        }
       });
     });
   }]);
