@@ -45,7 +45,7 @@ app.post('/login', function(req, res) {
                data.Item.digest &&
                passwordHash.verify(req.body.password, data.Item.digest.S)) {
       req.session.user = user;
-      req.session.role = data.Item.userRole || "student";
+      req.session.role = data.Item.userRole.S || "student";
       res.redirect(req.body.redirect || "/index.html");
     } else {
       res.redirect(req.body.errorRedirect || "/login.html");
