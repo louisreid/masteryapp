@@ -38,12 +38,14 @@
 @include foundation-visibility-classes;
 @include foundation-float-classes;
  
-@import 'shared';
-@import 'teacher-view';
-@import 'teacher-view__controls';
-@import 'assignments';
-@import 'video-thumbnail';
-@import 'marking-playlist';
-@import 'top-bar';
+// @import 'shared';
+// @import 'teacher-view';
+// @import 'teacher-view__controls';
+// @import 'assignments';
+// @import 'video-thumbnail';
+// @import 'marking-playlist';
+// @import 'top-bar';
+
+@import 'video';
 
 

@@ -8,36 +8,22 @@
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="styles/main.css">
-  <style type="text/css">
-  .current-video {
-    /*    width: 80%;
-    margin: 0px auto;
-*/
-  }
-  
-  video {
-    width: 100% !important;
-    max-width: 100%;
-    height: auto !important;
-  }
-  </style>
-  <link href="bower_components/video.js/dist/video-js.css" rel="stylesheet">
-  <link href="bower_components/dropzone/dist/dropzone.css" rel="stylesheet">
-  <script src="bower_components/video.js/dist/ie8/videojs-ie8.min.js"></script>
-  <script src="bower_components/video.js/dist/video.min.js"></script>
   <!--
-  <script src="bower_components/angular/angular.min.js"></script>
-  <script src="bower_components/angular-route/angular-route.min.js"></script>
+  <link href="../bower_components/video.js/dist/video-js.css" rel="stylesheet">
+  <link href="../bower_components/dropzone/dist/dropzone.css" rel="stylesheet">
+  <script src="../bower_components/video.js/dist/ie8/videojs-ie8.min.js"></script>
+  <script src="../bower_components/video.js/dist/video.min.js"></script>
 -->
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
-  <script src="bower_components/angular-strap/dist/angular-strap.min.js"></script>
-  <script src="bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
-  <script src="bower_components/async/dist/async.min.js"></script>
-  <script src="bower_components/dropzone/dist/dropzone.js"></script>
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/angular-route/angular-route.js"></script>
+  <script src="../bower_components/angular-strap/dist/angular-strap.min.js"></script>
+  <script src="../bower_components/angular-strap/dist/angular-strap.tpl.min.js"></script>
+  <!-- <script src="../bower_components/async/dist/async.min.js"></script> -->
+  <!-- <script src="../bower_components/dropzone/dist/dropzone.js"></script> -->
   <script src="scripts/app.js"></script>
+  <script src="scripts/services.js"></script>
   <script src="scripts/controllers.js"></script>
-  <script src="scripts/filters.js"></script>
+  <!-- <script src="scripts/filters.js"></script> -->
   <script src="https://use.fontawesome.com/e68bf84480.js"></script>
 </head>
 
@@ -47,20 +33,76 @@
       <div class="top-bar-left">
         <ul class="dropdown menu" data-dropdown-menu>
           <li class="menu-text top-bar__logo">
-            <img src="img/logo.png" alt=""> 
+            <img src="img/logo.png" alt="">
           </li>
         </ul>
       </div>
       <div class="top-bar-right">
         <ul class="menu">
-          <li><a href="#/dashboard">Dashboard</a></li>
-          <li><a href="#/assignments">Assignments</a></li>
-          <li><a href="#/class">Class</a></li>
+          <li><a href="#submit">Submit Video</a></li>
+          <li><a href="#marked">Marked Video</a></li>
+          <li><a href="#unmarked">Unmarked Video</a></li>
         </ul>
       </div>
     </div>
   </div>
-  <div class="main-wrapper" ng-view></div>
+  <div ng-controller="mainCtrl">
+    <div class="row" id="submit">
+      <div class="large-12 columns">
+        <div class="callout">
+          <form action="">
+            <h3>Submit new video</h3>
+            <label>Youtube URL (unlisted)</label>
+            <div class="row collapse">
+              <div class="small-10 columns">
+                <input type="text" ng-model="videoURL" placeholder="https://www.youtube.com/watch?v=rd_LDmLM6JQ">
+              </div>
+              <div class="small-2 columns">
+                <a href="#" ng-click="previewVideo()" class="button secondary postfix">Preview</a>
+              </div>
+            </div>
+            <!-- ng-show the preview only when a video has been loaded -->
+            <div class="callout" ng-show="currentVideo">
+              <!-- <div class="callout"> -->
+              <h5>Preview</h5>
+              <h3>Title: {{currentVideo.title}}</h3>
+              <img src="{{currentVideo.thumbnails.medium.url}}" alt="">
+              <label>Which teacher are you submitting to?</label>
+              <input type="radio" name="teachers" value="Red" id="Teacher 1">
+              <label for="Teacher 1">Teacher 1</label>
+              <input type="radio" name="teachers" value="Blue" id="Teacher 2">
+              <label for="Teacher 2">Teacher 2</label>
+              <p>Chosen Video: <br><a href="{{chosenVideoURL}}">{{chosenVideoURL}}</a></p>
+              <a href="#" ng-click="submitVideo()" class="button">Submit Video</a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+    <!-- Video Lists -->
+    <div class="row" id="unmarked">
+      <div class="large-12 columns">
+        <div class="callout">
+          <h3>Unmarked video</h3>
+          <ul>
+            <li class="video" ng-repeat="video in videos">
+              <div class="row">
+                <div class="small-4 columns">
+                  <img src="{{video.snippet.thumbnails.default.url}}" alt="">
+                </div>
+                <div class="small-8 columns">
+                  <h4>{{video.snippet.title}}</h4>
+                  <p>submitted by: {{user}}
+                    <br> submitted to: {{teacher}}</p>
+                </div>
+              </div>
+              <hr>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>
