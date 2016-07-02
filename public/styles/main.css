@@ -3553,6 +3553,52 @@ table.hover tr:nth-of-type(even):hover {
 .clearfix::after {
   clear: both; }
 
-li.video:hover {
-  background-color: #eee;
-  cursor: pointer; }
+.comment-list__comment {
+  color: #0a0a0a; }
+  .comment-list__comment:hover {
+    cursor: pointer;
+    opacity: 0.6; }
+
+.submit-video {
+  margin-top: 1rem; }
+
+.preview-video .preview-video__url {
+  color: #8a8a8a; }
+
+.video-list__thumbnail {
+  width: 100%; }
+
+.video__title {
+  color: #0a0a0a; }
+  .video__title span {
+    text-decoration: underline; }
+  .video__title .fa {
+    opacity: 0.5; }
+  .video__title:hover .fa {
+    opacity: 1; }
+
+.video__embed-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%; }
+  .video__embed-container iframe,
+  .video__embed-container object,
+  .video__embed-container embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; }
+
+.comments {
+  margin-top: 1rem; }
+
+.input-text-submit :last-child a {
+  display: block; }
+
+ul.clean-ul {
+  margin: 0; }
+  ul.clean-ul li {
+    padding: 0; }

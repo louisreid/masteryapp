@@ -1,0 +1,22 @@
+[
+	{
+		"username": "louisreid", 
+		"name": "L Reid",
+		"type": "student"
+	},
+	{
+		"username": "afruzza", 
+		"name": "Mr Fruzza",
+		"type": "teacher"
+	},
+	{
+		"username": "syarde", 
+		"name": "Mr Yarde",
+		"type": "teacher"
+	},
+	{
+		"username": "lreid", 
+		"name": "Mr Reid",
+		"type": "teacher "
+	}
+]

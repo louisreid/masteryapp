@@ -1,0 +1,45 @@
+  <div class="row submit-video" id="submitVideo">
+    <div class="large-12 columns">
+      <div class="callout">
+        <h3>
+              <i class="fa fa-link" aria-hidden="true"></i>
+              Submit new video
+            </h3>
+        <label>Please enter your Youtube URL.</label>
+        <div class="row collapse input-text-submit">
+          <div class="small-10 columns">
+            <input type="text" ng-model="videoURL" placeholder="https://www.youtube.com/watch?v=rd_LDmLM6JQ">
+          </div>
+          <div class="small-2 columns">
+            <a href="#" ng-click="previewVideo()" class="button secondary postfix">Preview</a>
+          </div>
+        </div>
+        <!-- ng-show the preview only when a video has been loaded -->
+        <div class="callout secondary preview-video" ng-show="currentVideo">
+          <!-- <div class="callout"> -->
+          <div class="row">
+            <div class="small-4 columns">
+              <img src="{{currentVideo.thumbnails.medium.url}}" alt="">
+            </div>
+            <div class="small-8 columns">
+              <h3>{{currentVideo.title}}</h3>
+              <p><a href="{{chosenVideoURL}}" class="preview-video__url">{{chosenVideoURL}}</a></p>
+              <div class="row">
+                <fieldset class="small-6 columns">
+                  <legend>Which teacher are you submitting to?</legend>
+                  <span ng-repeat="user in users | filter : {type:'teacher'}">
+                      <input type="radio" ng-model="$parent.chosenTeacher" value="{{user.username}}" name="teacher" id="teacher-{{user.username}}" required>
+                      <label for="teacher-{{user.username}}" >{{user.name}}</label>
+                    </span>
+                </fieldset>
+                <div class="small-4 columns clearfix">
+                  <a href="#" ng-click="submitVideo()" class="button float-right">Submit Video</a>
+                </div>
+                {{$scope.users}}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

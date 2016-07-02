@@ -4,8 +4,8 @@
 angular.module("masteryApp",[
   'ngRoute',
   'masteryServices',
-  'masteryControllers'
-  // 'masteryFilters'
+  'masteryControllers',
+  'masteryDirectives'
 ])
 // config(['$routeProvider', function($routeProvider) {
 //   $routeProvider.

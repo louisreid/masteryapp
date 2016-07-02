@@ -1,0 +1,67 @@
+<div class="row" id="unmarked">
+  <div class="large-12 columns">
+    <div class="callout">
+      <h3>
+            <i class="fa fa-square-o" aria-hidden="true"></i>
+            Unmarked video
+          </h3>
+      <!-- <div class="emoticon-picker">fix this later: 😀😁😂😃😅😆</div> -->
+      <ul class="video-list">
+        <li class="video" ng-repeat="video in userData.videos">
+          <div class="row">
+            <div class="columns" ng-class="{'small-4':!video.expanded,'small-7':video.expanded}">
+              <img class="video-list__thumbnail" ng-click="video.expanded = !video.expanded" src="{{video.YTObject.snippet.thumbnails.medium.url}}" alt="" ng-hide="video.expanded">
+              <div ng-show="video.expanded" class="video__embed-container">
+                <div id="playerVideo{{$index}}"></div>
+              </div>
+              <div class="comments" ng-show="video.expanded">
+                <div class="row">
+                  <div class="small-12 columns">
+                    <div class="callout">
+                      <ul class="comment-list">
+                        <li ng-repeat="comment in video.comments | orderBy:'time'">
+                          <a href="javascript:void();" class="comment-list__comment" ng-click="seekTo(comment.time,$parent.$index)">{{comment.time}}s : {{comment.comment}}</a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="columns" ng-class="{'small-8':!video.expanded,'small-5':video.expanded}">
+              <h4>
+                  <a href="javascript:void()" class="video__title" ng-click="video.expanded = !video.expanded; toggleVideo($index,video.expanded)">
+                  <span>{{video.YTObject.snippet.title}}</span>
+                    <i class="fa" ng-class="{'fa-expand': !video.expanded,'fa-compress': video.expanded}" aria-hidden="true"></i>
+                  </a>
+                  </h4>
+              <ul class="clean-ul">
+                <li>
+                  Submitted by: <span ng-repeat="user in users | filter: {username: userData.username}" "> {{user.name}} </span>
+                    </li>
+                    <li>
+                      Submitted to: <span ng-repeat="user in users | filter: {username: video.teacher} " "> {{user.name}} </span>
+                </li>
+              </ul>
+              <a href="javascript:void(); " class="button primary " ng-click="video.expanded=! video.expanded; toggleVideo($index,video.expanded); ">
+                <i class="fa " ng-class="{ 'fa-expand': !video.expanded, 'fa-compress': video.expanded} " aria-hidden="true "></i> {{video.expanded == true ? 'Contract' : 'Expand'}}
+              </a>
+              <a href="javascript:void(); " class="button secondary " ng-click="removeVideo($index) ">
+                <i class="fa fa-trash " aria-hidden="true "></i>
+              </a>
+              <div class="row collapse input-text-submit " ng-show="video.expanded ">
+                <div class="small-10 columns ">
+                  <input type="text" ng-model="video.commentText" placeholder="Write timed feedback ">
+                </div>
+                <div class="small-2 columns ">
+                  <a href="javascript:void(); " ng-click="submitComment($index) " class="button secondary postfix " id="player{{$index}}Time ">Submit</a>
+                </div>
+              </div>
+            </div>
+          </div>
+    <hr>
+    </li>
+    </ul>
+  </div>
+</div>
+</div>

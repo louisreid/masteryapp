@@ -1,0 +1,100 @@
+// ==========================================================================
+// Video Player
+// ==========================================================================
+//
+// Comments
+//
+.comment-list__comment {
+  color: $black;
+  &:hover {
+    cursor: pointer;
+    opacity: 0.6;
+  }
+}
+
+//
+// Submit Video
+//
+.submit-video {
+  margin-top: $global-padding;
+}
+
+//
+// Preview Video
+//
+.preview-video {
+  .preview-video__url {
+    color: $dark-gray;
+  }
+}
+
+//
+// Video List
+//
+.video-list {}
+
+.video-list__thumbnail {
+  width: 100%;
+}
+
+//
+// Video
+//
+.video {}
+
+.video__title {
+  color: $black;
+  span {
+    text-decoration: underline;
+  }
+  .fa {
+    opacity: 0.5;
+  }
+  &:hover {
+    .fa {
+      opacity: 1;
+    }
+  }
+}
+
+.video__embed-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  iframe,
+  object,
+  embed {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+//
+// Comments
+//
+.comments {
+	margin-top: $global-padding;
+}
+
+//
+// Misc
+//
+.input-text-submit {
+  :last-child {
+    a {
+      display: block;
+    }
+  }
+}
+
+ul.clean-ul {
+  margin: 0;
+  li {
+    padding: 0;
+  }
+}

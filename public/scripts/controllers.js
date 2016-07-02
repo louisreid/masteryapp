@@ -1,8 +1,15 @@
 var masteryControllers = angular.module('masteryControllers', []);
 
-masteryControllers.controller('mainCtrl', function($scope, loadVideos, loadUserData, addVideo, extractID) {
-  $scope.user = "louis";
-
+masteryControllers.controller('submitVideoCtrl', function(
+  $rootScope,
+  $scope,
+  loadVideos,
+  loadUsers,
+  loadData,
+  saveData,
+  extractID,
+  refreshVideos
+) {
   $scope.previewVideo = function() {
     loadVideos([$scope.videoURL], function(response) {
       $scope.currentVideo = response.data.items[0].snippet;
@@ -11,65 +18,114 @@ masteryControllers.controller('mainCtrl', function($scope, loadVideos, loadUserD
   };
 
   $scope.submitVideo = function() {
-    console.log("addVideo has been pushed");
-    $scope.videoList.push(extractID($scope.chosenVideoURL));
-    console.log($scope.videoList);
-    addVideo($scope.user,$scope.videoList);
-    loadVideos($scope.videoList, function(response) {
-      $scope.videos = response.data.items;
-    }, true);
+    $scope.userData.videos.push({
+      id: extractID([$scope.chosenVideoURL], false),
+      teacher: $scope.chosenTeacher,
+      comments: []
+    });
+    // Before the save is made we need to go through and take the YTObject from each array item
+    // saveData($scope.username, $scope.userData.videos);
+    refreshVideos($scope.userData.videos);
+    $scope.currentVideo = "";
   };
 
-  loadUserData($scope.user, function(response) {
 
-    $scope.videoList = JSON.parse(response.data[0].videos);
+});
 
-    loadVideos($scope.videoList, function(response) {
-      $scope.videos = response.data.items;
-    }, true);
+masteryControllers.controller('videoListCtrl', function(
+  $rootScope,
+  $scope,
+  loadVideos,
+  loadUsers,
+  loadData,
+  saveData,
+  extractID,
+  refreshVideos
+) {
+
+  $scope.removeVideo = function(index) {
+    console.log("Removing video " + index);
+  };
+
+  $scope.toggleVideo = function(index, expanded) {
+    if (expanded === true) {
+      // Current time 
+      var checkAPI = setInterval(function() {
+        if (youTubeAPIReady === true) {
+          clearInterval(checkAPI);
+          $scope.userData.videos[index].player = new YT.Player('playerVideo' + index, {
+            height: '300',
+            width: '480',
+            videoId: $scope.userData.videos[index].id,
+            events: {
+              'onStateChange': function(event) {
+                var myTimer;
+                if (event.data === 1) { // playing
+                  myTimer = setInterval(function() {
+                    var currentTime = $scope.userData.videos[index].player.getCurrentTime();
+                    $scope.userData.videos[index].currentTime = currentTime;
+                    document.getElementById("player" + index + "Time").innerHTML = Math.round(currentTime) + 's';
+                  }, 1000);
+                } else { // not playing
+                  clearInterval(myTimer);
+                }
+              }
+            }
+          });
+        }
+      }, 100);
+    } else {
+      $scope.userData.videos[index].player.pauseVideo();
+    }
+  };
+
+  $scope.submitComment = function(index) {
+    $scope.userData.videos[index].comments.push({
+      time: Math.round($scope.userData.videos[index].currentTime),
+      comment: $scope.userData.videos[index].commentText
+    });
+    $scope.commentText = "";
+  };
+
+  $scope.seekTo = function(time, index) {
+    $scope.userData.videos[index].player.seekTo(time, true);
+    $scope.userData.videos[index].player.pauseVideo();
+  };
+
+  $rootScope.username = "louis";
+
+  var tag = document.createElement('script');
+
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  var youTubeAPIReady = false;
+  window.onYouTubeIframeAPIReady = function() {
+    youTubeAPIReady = true;
+  };
+
+  loadData($scope.username, function(response) {
+    $scope.userData = response.data[0];
+    refreshVideos($scope.userData.videos);
   });
 
-  // Intended function for add video button
-  // $scope.addVideo = function(){
-  //   addVideo(videoURL);
-  // };
+  loadUsers(function(response) {
+    $scope.users = response.data;
+  });
 
 
-
-  // Intended function for loading markedVideos
-  // $scope.videos = loadUserData(user);
+  //
+  // Emoticons, work in progress
+  //
+  window.onload = function() {
+    twemoji.size = '16x16';
+    twemoji.parse(document.body);
+  };
 
 });
 
 
-// masteryControllers.controller('videoList', ['$scope', '$http',
-//   function($scope, $http) {
-//     console.log("The videoList controller is alive");
-//     $http.get("https://www.googleapis.com/youtube/v3/channels", {
-//       params: {
-//         part: 'contentDetails',
-//         forUsername: 'TechGuyWeb',
-//         key: 'AIzaSyArvVCR-ijSJqvFtDE2Z7z5DGC1W9c_7U8'
-//       }
-//     }).success(function(data) {
-//       angular.forEach(data.items, function(item) {
-//         pid = item.contentDetails.relatedPlaylists.uploads;
-//         $http.get("https://www.googleapis.com/youtube/v3/playlistItems", {
-//           params: {
-//             part: 'snippet',
-//             playlistId: pid,
-//             key: 'AIzaSyArvVCR-ijSJqvFtDE2Z7z5DGC1W9c_7U8'
-//           }
-//         }).success(function(data) {
-//           $scope.videoTitles = [];
-//           angular.forEach(data.items, function(item) {
-//             $scope.videoTitles.push(item.snippet.title);
-//           })
-//         })
-//       })
-//     })
-//   }
-// ]);
 
 
 
@@ -140,23 +196,23 @@ masteryControllers.controller('mainCtrl', function($scope, loadVideos, loadUserD
 //       });
 //       $scope.noteText = "";
 //     };
-//     $scope.addSticker = function(sticker) {
-//       var note = { "timestamp": $scope.timestamp, "sticker": sticker };
-//       if ($scope.noteText) {
-//         var comments = JSON.parse(localStorage.previousComments || "[]");
-//         comments = comments.filter(function(x) {
-//           return x != $scope.noteText;
-//         });
-//         comments.splice(0, 0, $scope.noteText);
-//         $scope.previousComments = comments;
-//         localStorage.previousComments = JSON.stringify(comments);
-//         note.note = $scope.noteText;
-//       }
-//       $http.put('video/' + $scope.video + "/note", JSON.stringify(note), { headers: { "Content-Type": "application/json" } }).success(function(data) {
-//         $scope.notes.push(note);
-//       });
-//       $scope.noteText = "";
-//     };
+// $scope.addSticker = function(sticker) {
+//   var note = { "timestamp": $scope.timestamp, "sticker": sticker };
+//   if ($scope.noteText) {
+//     var comments = JSON.parse(localStorage.previousComments || "[]");
+//     comments = comments.filter(function(x) {
+//       return x != $scope.noteText;
+//     });
+//     comments.splice(0, 0, $scope.noteText);
+//     $scope.previousComments = comments;
+//     localStorage.previousComments = JSON.stringify(comments);
+//     note.note = $scope.noteText;
+//   }
+//   $http.put('video/' + $scope.video + "/note", JSON.stringify(note), { headers: { "Content-Type": "application/json" } }).success(function(data) {
+//     $scope.notes.push(note);
+//   });
+//   $scope.noteText = "";
+// };
 //     $scope.promoteVideo = function() {
 //       $http.post('video/' + $scope.video, JSON.stringify({ promoted: true }), { headers: { "Content-Type": "application/json" } }).success(function(data) {
 //         $scope.promoted = true;

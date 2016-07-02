@@ -8359,6 +8359,28 @@
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
 		},
+	"\/public\/mock\/mock.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/public\/mock\/mock.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/public\/mock\/mock-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
+	"\/public\/mock\/users.json": {
+		"fileType": 524288,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/public\/mock\/users.json",
+		"orderOutput": 0,
+		"outputAbbreviatedPath": "\/public\/mock\/users-min.json",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1
+		},
 	"\/public\/partials\/assignment.html": {
 		"fileType": 8192,
 		"ignore": 0,
@@ -8408,10 +8430,21 @@
 		},
 	"\/public\/scripts\/controllers.js": {
 		"fileType": 64,
-		"ignore": 0,
+		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/public\/scripts\/controllers.js",
 		"outputAbbreviatedPath": "\/public\/scripts\/min\/controllers-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/public\/scripts\/directives.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/public\/scripts\/directives.js",
+		"outputAbbreviatedPath": "\/public\/scripts\/min\/directives-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -8423,6 +8456,17 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/public\/scripts\/filters.js",
 		"outputAbbreviatedPath": "\/public\/scripts\/min\/filters-min.js",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 1,
+		"syntaxCheckerStyle": 1
+		},
+	"\/public\/scripts\/min\/app-min.js": {
+		"fileType": 64,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/public\/scripts\/min\/app-min.js",
+		"outputAbbreviatedPath": "\/public\/scripts\/min\/min\/app-min-min.js",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 1,
@@ -8486,6 +8530,22 @@
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/public\/scss\/_marking-playlist.scss",
 		"outputAbbreviatedPath": "\/public\/styles\/_marking-playlist.css",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0,
+		"outputStyle": 0,
+		"shouldRunAutoprefixer": 0,
+		"shouldRunBless": 0,
+		"useLibsass": 0
+		},
+	"\/public\/scss\/_mvp.scss": {
+		"createSourceMap": 0,
+		"debugStyle": 0,
+		"decimalPrecision": 10,
+		"fileType": 4,
+		"ignore": 1,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/public\/scss\/_mvp.scss",
+		"outputAbbreviatedPath": "\/public\/styles\/_mvp.css",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0,
 		"outputStyle": 0,
@@ -8573,22 +8633,6 @@
 		"shouldRunBless": 0,
 		"useLibsass": 0
 		},
-	"\/public\/scss\/_video.scss": {
-		"createSourceMap": 0,
-		"debugStyle": 0,
-		"decimalPrecision": 10,
-		"fileType": 4,
-		"ignore": 1,
-		"ignoreWasSetByUser": 0,
-		"inputAbbreviatedPath": "\/public\/scss\/_video.scss",
-		"outputAbbreviatedPath": "\/public\/styles\/_video.css",
-		"outputPathIsOutsideProject": 0,
-		"outputPathIsSetByUser": 0,
-		"outputStyle": 0,
-		"shouldRunAutoprefixer": 0,
-		"shouldRunBless": 0,
-		"useLibsass": 0
-		},
 	"\/public\/scss\/main.scss": {
 		"createSourceMap": 0,
 		"debugStyle": 0,
@@ -8610,6 +8654,33 @@
 		"ignore": 1,
 		"ignoreWasSetByUser": 0,
 		"inputAbbreviatedPath": "\/public\/styles\/main.css",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/public\/templates\/submit-video.html": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/public\/templates\/submit-video.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/public\/templates\/video-list.html": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/public\/templates\/video-list.html",
+		"outputAbbreviatedPath": "No Output Path",
+		"outputPathIsOutsideProject": 0,
+		"outputPathIsSetByUser": 0
+		},
+	"\/public\/twemoji.html": {
+		"fileType": 8192,
+		"ignore": 0,
+		"ignoreWasSetByUser": 0,
+		"inputAbbreviatedPath": "\/public\/twemoji.html",
 		"outputAbbreviatedPath": "No Output Path",
 		"outputPathIsOutsideProject": 0,
 		"outputPathIsSetByUser": 0
@@ -9489,7 +9560,7 @@
 			}
 		},
 	"uglifyReservedNamesString": "$",
-	"websiteRelativeRoot": "\/public\/"
+	"websiteRelativeRoot": ""
 	},
 "settingsFileVersion": "2"
 }
